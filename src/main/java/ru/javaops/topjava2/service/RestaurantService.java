@@ -23,7 +23,7 @@ public class RestaurantService {
     }
 
     //TODO причесать CRUDs, добавить проверки, оптимизировать лишнее
-    public Optional<Restaurant> getRestaurantsById(Long id) {
+    public Optional<Restaurant> getRestaurantById(Long id) {
         return restaurantRepository.findById(id);
     }
 

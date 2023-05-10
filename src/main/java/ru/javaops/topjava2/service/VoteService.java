@@ -23,6 +23,12 @@ public class VoteService {
         return voteRepository.findAll();
     }
 
+    public Optional<Vote> getVoteById(Long id) {
+        return voteRepository.findById(id);
+    }
+
+
+
     public Optional<Vote> getVoteByUserAndVoteDate(User user, LocalDate voteDate) {
         return voteRepository.findByUserIdAndDate(user.getId().longValue(), voteDate);
     }
