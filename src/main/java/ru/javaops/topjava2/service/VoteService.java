@@ -28,7 +28,7 @@ public class VoteService {
     }
 
     public List<Vote> getVotesByVoteDate(LocalDate voteDate) {
-        return voteRepository.findByVoteDate(voteDate);
+        return voteRepository.findByDate(voteDate);
     }
 
     public Vote createVote(Vote vote) {
