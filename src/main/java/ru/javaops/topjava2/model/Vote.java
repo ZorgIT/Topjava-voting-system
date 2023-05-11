@@ -26,6 +26,12 @@ public class Vote {
     @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
 
+    public Vote() {
+
+    }
+
+
+
     public Long getId() {
         return id;
     }

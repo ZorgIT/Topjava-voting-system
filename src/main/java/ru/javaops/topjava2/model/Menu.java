@@ -26,6 +26,10 @@ public class Menu {
     @JsonBackReference
     private Restaurant restaurant;
 
+    public Menu() {
+
+    }
+
     public Long getId() {
         return id;
     }

@@ -42,6 +42,10 @@ public class Restaurant {
         this.menus = menus;
     }
 
+    public Restaurant() {
+
+    };
+
     @Override
     public String toString() {
         return "Restaurant{" +
