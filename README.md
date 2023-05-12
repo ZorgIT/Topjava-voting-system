@@ -55,20 +55,20 @@ REST API endpoints
    PUT /api/admin/restaurants/{restaurantId}/menus/{menuId} - для обновления меню для в конкретном ресторане
    DELETE /api/admin/restaurants/{restaurantId}/menus/{menuId} -для удаления меню для в конкретном ресторане
 
-2. Управление Персональными данными (Доступ(GET\PUT\DELETE) - авторизованные пользователи; POST - не авторизованные)
-   POST /api/profile - для создания нового пользователя #todo Добавить валидацию данных
-   GET /api/profile - получение данных текущего пользователя
-   PUT /api/profile - обновление данных текущего пользователя
-   DELETE /api/profile - удаление профиля пользователя
+2. Управление Персональными данными (Доступ(GET\PUT\DELETE) - авторизованные пользователи; POST - не авторизованные) (checked)
+   POST /api/profile - для создания нового пользователя #todo Добавить валидацию данных (checked)
+   GET /api/profile - получение данных текущего пользователя (checked)
+   PUT /api/profile - обновление данных текущего пользователя (checked)
+   DELETE /api/profile - удаление профиля пользователя (checked)
 
-3. Администрирование пользовательских аккаунтов (Доступ - ROLE_ADMIN, AdminUserController)
-   POST /api/admin/users - создание нового пользователя
-   GET /api/admin/users - получение всех пользователей
-   GET /api/admin/users - получение пользователя по email
-   GET /api/admin/users/{userId} - получение пользователя по ID
-   PUT /api/admin/users/{userId} - обновление пользователя по ID
-   PATCH /api/admin/users/{userId} - частичное обновление пользователя по ID
-   DELETE /api/admin/users/{userId} - удаление пользователя по ID
+3. Администрирование пользовательских аккаунтов (Доступ - ROLE_ADMIN, AdminUserController) (checked)
+   POST /api/admin/users - создание нового пользователя (checked)
+   GET /api/admin/users - получение всех пользователей (checked)
+   GET /api/admin/users - получение пользователя по email checked)
+   GET /api/admin/users/{userId} - получение пользователя по ID (checked)
+   PUT /api/admin/users/{userId} - обновление пользователя по ID (checked)
+   PATCH /api/admin/users/{userId} - включение\отключение учетной записи по ID (checked)
+   DELETE /api/admin/users/{userId} - удаление пользователя по ID (checked)
 
 4. Администрирование ресторанов (Доступ - ROLE_ADMIN, AdminRestaurantController)
    POST /api/admin/restaurants - создание нового ресторана

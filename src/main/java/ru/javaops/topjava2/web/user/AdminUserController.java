@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javaops.topjava2.model.User;
+import ru.javaops.topjava2.to.UserTo;
+import ru.javaops.topjava2.util.UsersUtil;
 
 import java.net.URI;
 import java.util.List;
@@ -43,10 +45,10 @@ public class AdminUserController extends AbstractUserController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user) {
+    public ResponseEntity<User> createWithLocation(@Valid @RequestBody UserTo user) {
         log.info("create {}", user);
         checkNew(user);
-        User created = repository.prepareAndSave(user);
+        User created = repository.prepareAndSave(UsersUtil.createNewFromTo(user));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();

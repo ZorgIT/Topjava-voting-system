@@ -1,5 +1,6 @@
 package ru.javaops.topjava2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -16,6 +17,8 @@ public class Restaurant {
     private String name;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("menu")
+    @OrderBy("date DESC")
     private Set<Menu> menus;
 
     public Long getId() {
