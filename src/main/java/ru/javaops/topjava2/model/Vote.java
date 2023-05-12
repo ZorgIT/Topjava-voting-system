@@ -30,8 +30,6 @@ public class Vote {
 
     }
 
-
-
     public Long getId() {
         return id;
     }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.javaops.topjava2.dto.MenuDto;
 import ru.javaops.topjava2.dto.RestaurantWithMenuDto;
+import ru.javaops.topjava2.dto.VoteDto;
 import ru.javaops.topjava2.error.MenuNotFoundException;
 import ru.javaops.topjava2.error.UserNotFoundException;
 import ru.javaops.topjava2.error.VoteChangeNotAllowedException;
@@ -54,7 +55,7 @@ public class VoteService {
         return restaurantWithMenuDtos;
     }
 
-    public void vote(Long restaurantId) {
+    public void vote(VoteDto voteDto) {
         User user = userService.getCurrentUser().orElseThrow(UserNotFoundException::new);
         Optional<Vote> voteOptional = voteRepository.findByUserIdAndDate(user.getId(), LocalDate.now());
         if (voteOptional.isPresent()) {
@@ -62,10 +63,10 @@ public class VoteService {
             if (LocalDateTime.now().isBefore(LocalDate.now().atTime(11, 0))) {
                 Menu menu = menuRepository.findById(vote.getMenu().getId()).orElseThrow(MenuNotFoundException::new);
                 Restaurant restaurant = menu.getRestaurant();
-                if (restaurant.getId().equals(restaurantId)) {
+                if (restaurant.getId().equals(voteDto.getRestaurantId())) {
                     return;
                 }
-                menu = menuRepository.findByRestaurantAndDate(restaurantId,
+                menu = menuRepository.findByRestaurantAndDate(voteDto.getRestaurantId(),
                         LocalDate.now()).orElseThrow(MenuNotFoundException::new);
                 vote.setMenu(menu);
                 voteRepository.save(vote);
@@ -73,7 +74,7 @@ public class VoteService {
                 throw new VoteChangeNotAllowedException();
             }
         } else {
-            Menu menu = menuRepository.findByRestaurantAndDate(restaurantId,
+            Menu menu = menuRepository.findByRestaurantAndDate(voteDto.getRestaurantId(),
                     LocalDate.now()).orElseThrow(MenuNotFoundException::new);
             Vote vote = new Vote();
             vote.setUser(user);

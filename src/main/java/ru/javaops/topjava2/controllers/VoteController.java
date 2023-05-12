@@ -26,8 +26,9 @@ public class VoteController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> vote(@RequestBody VoteDto voteDto) {
-        voteService.vote(voteDto.getRestaurantId());
+    public ResponseEntity<Void> vote(@RequestBody Long restaurantId) {
+        VoteDto voteDto = new VoteDto(restaurantId);
+        voteService.vote(voteDto);
         return ResponseEntity.noContent().build();
     }
 }

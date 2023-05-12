@@ -13,13 +13,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = MenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class MenuController {
-    static final String REST_URL = "/api/restaurants";
+@RequestMapping(value = AdminMenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class AdminMenuController {
+    static final String REST_URL = "/api/admin/restaurants";
     private final MenuService menuService;
 
     @Autowired
-    public MenuController(MenuService menuService) {
+    public AdminMenuController(MenuService menuService) {
         this.menuService = menuService;
     }
 
@@ -30,17 +30,13 @@ public class MenuController {
     }
 
     @GetMapping("/{restaurantId}/menus")
-    public ResponseEntity<List<Menu>> getMenuForRestaurantAndDate(
-            @PathVariable Long restaurantId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+    public ResponseEntity<List<Menu>> getMenuForRestaurantAndDate(@PathVariable Long restaurantId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         List<Menu> menu = menuService.getMenuForRestaurantAdnDate(restaurantId, date);
         return ResponseEntity.ok(menu);
     }
 
     @PutMapping("/{restaurantId}/menus/{menuId}")
-    public ResponseEntity<Menu> updateMenu(@PathVariable Long restaurantId,
-                                           @PathVariable Long menuId,
-                                           @RequestBody Menu updatedMenu) {
+    public ResponseEntity<Menu> updateMenu(@PathVariable Long restaurantId, @PathVariable Long menuId, @RequestBody Menu updatedMenu) {
         Menu menu = menuService.updateMenu(restaurantId, menuId, updatedMenu);
         return ResponseEntity.ok(menu);
     }

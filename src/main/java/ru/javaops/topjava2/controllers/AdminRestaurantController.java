@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = RestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestaurantController {
-    static final String REST_URL = "/api/admin/restaurants/crud";
+@RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class AdminRestaurantController {
+    static final String REST_URL = "/api/admin/restaurants";
     private final RestaurantService restaurantService;
 
     @Autowired
-    public RestaurantController(RestaurantService restaurantService) {
+    public AdminRestaurantController(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
 

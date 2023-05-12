@@ -24,16 +24,16 @@ public class AdminUserController extends AbstractUserController {
     static final String REST_URL = "/api/admin/users";
 
     @Override
-    @GetMapping("/{id}")
-    public User get(@PathVariable int id) {
-        return super.get(id);
+    @GetMapping("/{userId}")
+    public User get(@PathVariable int userId) {
+        return super.get(userId);
     }
 
     @Override
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
-        super.delete(id);
+    public void delete(@PathVariable int userId) {
+        super.delete(userId);
     }
 
     @GetMapping
@@ -53,11 +53,11 @@ public class AdminUserController extends AbstractUserController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody User user, @PathVariable int id) {
-        log.info("update {} with id={}", user, id);
-        assureIdConsistent(user, id);
+    public void update(@Valid @RequestBody User user, @PathVariable int userId) {
+        log.info("update {} with id={}", user, userId);
+        assureIdConsistent(user, userId);
         repository.prepareAndSave(user);
     }
 
@@ -67,12 +67,12 @@ public class AdminUserController extends AbstractUserController {
         return repository.getExistedByEmail(email);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    public void enable(@PathVariable int id, @RequestParam boolean enabled) {
-        log.info(enabled ? "enable {}" : "disable {}", id);
-        User user = repository.getExisted(id);
+    public void enable(@PathVariable int userId, @RequestParam boolean enabled) {
+        log.info(enabled ? "enable {}" : "disable {}", userId);
+        User user = repository.getExisted(userId);
         user.setEnabled(enabled);
     }
 }
