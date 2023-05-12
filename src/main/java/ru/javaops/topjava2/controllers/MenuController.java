@@ -23,18 +23,18 @@ public class MenuController {
         this.menuService = menuService;
     }
 
+    @PostMapping("/{restaurantId}/menus")
+    public ResponseEntity<Menu> createMenu(@PathVariable Long restaurantId, @RequestBody Menu menu) {
+        Menu createdMenu = menuService.createMenu(restaurantId, menu);
+        return ResponseEntity.ok(createdMenu);
+    }
+
     @GetMapping("/{restaurantId}/menus")
     public ResponseEntity<List<Menu>> getMenuForRestaurantAndDate(
             @PathVariable Long restaurantId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         List<Menu> menu = menuService.getMenuForRestaurantAdnDate(restaurantId, date);
         return ResponseEntity.ok(menu);
-    }
-
-    @PostMapping("/{restaurantId}/menus")
-    public ResponseEntity<Menu> createMenu(@PathVariable Long restaurantId, @RequestBody Menu menu) {
-        Menu createdMenu = menuService.createMenu(restaurantId, menu);
-        return ResponseEntity.ok(createdMenu);
     }
 
     @PutMapping("/{restaurantId}/menus/{menuId}")
