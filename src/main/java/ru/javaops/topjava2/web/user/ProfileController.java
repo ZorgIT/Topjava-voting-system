@@ -27,9 +27,9 @@ public class ProfileController extends AbstractUserController {
     static final String REST_URL = "/api/profile";
 
     @GetMapping
-    public User get(@AuthenticationPrincipal AuthUser authUser) {
+    public UserTo get(@AuthenticationPrincipal AuthUser authUser) {
         log.info("get {}", authUser);
-        return authUser.getUser();
+        return UsersUtil.asTo(authUser.getUser());
     }
 
     @DeleteMapping
@@ -40,13 +40,13 @@ public class ProfileController extends AbstractUserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<User> register(@Valid @RequestBody UserTo userTo) {
+    public ResponseEntity<UserTo> register(@Valid @RequestBody UserTo userTo) {
         log.info("register {}", userTo);
         checkNew(userTo);
         User created = repository.prepareAndSave(UsersUtil.createNewFromTo(userTo));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL).build().toUri();
-        return ResponseEntity.created(uriOfNewResource).body(created);
+        return ResponseEntity.created(uriOfNewResource).body(UsersUtil.asTo(created));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
