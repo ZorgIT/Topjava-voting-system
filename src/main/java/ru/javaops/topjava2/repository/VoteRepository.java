@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface VoteRepository extends JpaRepository<Vote, Long> {
-    Optional<Vote> findByUserIdAndDate(Long userId, LocalDate date);
+public interface VoteRepository extends JpaRepository<Vote, Integer> {
+    Optional<Vote> findByUserIdAndDate(Integer userId, LocalDate date);
 
     List<Vote> findByDate(LocalDate date);
 }

@@ -1,5 +1,6 @@
 package ru.javaops.topjava2.dto;
 
+//TODO add valid data
 public class RestaurantDto {
     private Long id;
     private String name;

@@ -11,5 +11,9 @@ import java.util.Optional;
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
     List<Menu> findByRestaurantIdAndDate(Long restaurantId, LocalDate date);
+
     List<Menu> findByRestaurantId(Long restaurantId);
+
+    List<Menu> findByDate(LocalDate date);
+    Optional<Menu> findByRestaurantAndDate(Long restaurantId, LocalDate date);
 }

@@ -3,6 +3,7 @@ package ru.javaops.topjava2.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+//TODO add valid data
 public class MenuDto {
     private Long id;
     private LocalDate date;

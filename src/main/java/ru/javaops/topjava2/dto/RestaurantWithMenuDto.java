@@ -2,6 +2,7 @@ package ru.javaops.topjava2.dto;
 
 import java.util.List;
 
+//TODO add valid data
 public class RestaurantWithMenuDto {
     private Long id;
     private String name;
