@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Service
 public class VoteService {
+    //Todo Добавить бизнес - логику.
     private final VoteRepository voteRepository;
 
     @Autowired

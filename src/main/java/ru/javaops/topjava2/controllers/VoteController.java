@@ -1,5 +1,6 @@
 package ru.javaops.topjava2.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/votes")
+@RequestMapping("/api/votes")
 public class VoteController {
     private final VoteService voteService;
 
     private final UserService userService;
 
+    @Autowired
     public VoteController(VoteService voteService, UserService userService) {
         this.voteService = voteService;
         this.userService = userService;

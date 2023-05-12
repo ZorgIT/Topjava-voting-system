@@ -69,6 +69,8 @@ public class Vote {
         return "Vote{" +
                 "id=" + id +
                 ", date=" + date +
+                ", user=" + user +
+                ", menu=" + menu +
                 '}';
     }
 }
