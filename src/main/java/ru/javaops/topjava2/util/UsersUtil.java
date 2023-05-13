@@ -8,8 +8,6 @@ import ru.javaops.topjava2.to.UserTo;
 
 @UtilityClass
 public class UsersUtil {
-
-
     public static User createNewFromTo(UserTo userTo) {
         return new User(null, userTo.getName(), userTo.getEmail().toLowerCase(), userTo.getPassword(), Role.USER);
     }
@@ -24,10 +22,10 @@ public class UsersUtil {
     public static UserTo asTo(User user) {
         return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword());
     }
+
     public static AdminUserTo asAdminUserTo(User user) {
         return new AdminUserTo(user.getId(), user.getName(), user.getEmail(),
-                user.getPassword(),user.isEnabled(),user.getRoles());
+                user.getPassword(), user.isEnabled(), user.getRoles());
     }
-
 
 }

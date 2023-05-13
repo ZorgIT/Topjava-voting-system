@@ -49,7 +49,8 @@ public class AdminUserController extends AbstractUserController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AdminUserTo> createWithLocation(@Valid @RequestBody UserTo user) {
+    public ResponseEntity<AdminUserTo> createWithLocation(
+            @Valid @RequestBody UserTo user) {
         log.info("create {}", user);
         checkNew(user);
         AdminUserTo created = UsersUtil.asAdminUserTo(repository.prepareAndSave(UsersUtil.createNewFromTo(user)));

@@ -28,7 +28,7 @@ public class RestaurantService {
 
     public Restaurant getRestaurantById(Long id) {
         return restaurantRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Restaurant with id:" + id + " not found" ));
+                .orElseThrow(() -> new NotFoundException("Restaurant with id:" + id + " not found"));
     }
 
     public List<RestaurantDto> getAllRestaurants() {
@@ -54,7 +54,8 @@ public class RestaurantService {
         if (restaurant.isPresent()) {
             restaurantRepository.delete(restaurant.get());
         } else {
-            throw new IllegalArgumentException("Restaurant with id" + restaurantId +" not found");
+            throw new IllegalArgumentException("Restaurant with id"
+                    + restaurantId + " not found");
         }
     }
 
