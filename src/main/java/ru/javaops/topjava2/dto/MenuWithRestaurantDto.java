@@ -14,9 +14,6 @@ public class MenuWithRestaurantDto extends AbstractMenuDto {
     @NotNull
     private RestaurantDto restaurant;
 
-    public MenuWithRestaurantDto() {
-    }
-
     public MenuWithRestaurantDto(LocalDate date, String dish, BigDecimal price, RestaurantDto restaurant) {
         super(dish, price);
         this.date = date;
@@ -25,10 +22,6 @@ public class MenuWithRestaurantDto extends AbstractMenuDto {
 
     public RestaurantDto getRestaurant() {
         return restaurant;
-    }
-
-    public void setRestaurant(RestaurantDto restaurant) {
-        this.restaurant = restaurant;
     }
 
     public LocalDate getDate() {

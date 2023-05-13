@@ -5,13 +5,12 @@ import org.springframework.stereotype.Repository;
 import ru.javaops.topjava2.model.Vote;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Long> {
     Optional<Vote> findByUserIdAndDate(Integer userId, LocalDate date);
+
     Optional<Vote> findById(Long id);
 
-    List<Vote> findByDate(LocalDate date);
 }

@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javaops.topjava2.dto.VoteDto;
 import ru.javaops.topjava2.error.NotFoundException;
-import ru.javaops.topjava2.error.UnauthorizedException;
 import ru.javaops.topjava2.model.Restaurant;
 import ru.javaops.topjava2.model.Vote;
 import ru.javaops.topjava2.repository.MenuRepository;
@@ -23,16 +22,10 @@ import java.util.Optional;
 @RequestMapping("/api/votes")
 public class VoteController {
     private final VoteService voteService;
-    private final UserService userService;
-    private final MenuRepository menuRepository;
-    private final RestaurantRepository restaurantRepository;
 
     @Autowired
     public VoteController(VoteService voteService, UserService userService, MenuRepository menuRepository, RestaurantRepository restaurantRepository) {
         this.voteService = voteService;
-        this.userService = userService;
-        this.menuRepository = menuRepository;
-        this.restaurantRepository = restaurantRepository;
     }
 
 

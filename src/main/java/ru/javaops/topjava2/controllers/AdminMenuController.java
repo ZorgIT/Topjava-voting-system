@@ -14,7 +14,6 @@ import ru.javaops.topjava2.model.Menu;
 import ru.javaops.topjava2.service.MenuService;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping(value = AdminMenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)

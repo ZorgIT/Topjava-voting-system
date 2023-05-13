@@ -7,7 +7,7 @@ public class RestaurantDto extends AbstractRestaurantDto {
         super();
     }
 
-    public RestaurantDto(long id, String name) {
+    public RestaurantDto(String name) {
         super(name);
     }
 

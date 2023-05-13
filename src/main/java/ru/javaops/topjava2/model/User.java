@@ -90,14 +90,6 @@ public class User extends NamedEntity implements HasIdAndEmail, Serializable {
         return roles != null && roles.contains(role);
     }
 
-    public Set<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(Set<Vote> votes) {
-        this.votes = votes;
-    }
-
     @Override
     public String toString() {
         return "User:" + id + '[' + email + ']';

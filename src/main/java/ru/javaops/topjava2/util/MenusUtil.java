@@ -1,7 +1,6 @@
 package ru.javaops.topjava2.util;
 
 import lombok.experimental.UtilityClass;
-import ru.javaops.topjava2.dto.MenuDto;
 import ru.javaops.topjava2.dto.MenuWithRestaurantDto;
 import ru.javaops.topjava2.dto.MenuWithoutDateDto;
 import ru.javaops.topjava2.dto.RestaurantDto;
@@ -11,11 +10,6 @@ import java.time.LocalDate;
 
 @UtilityClass
 public class MenusUtil {
-
-    public static Menu createNewFromTo(MenuWithRestaurantDto menuDto) {
-        return new Menu(menuDto.getDate(), menuDto.getDish(), menuDto.getPrice(),
-                RestaurantUtil.createNewFromTo(menuDto.getRestaurant()));
-    }
 
     public static Menu updateFromTo(Menu menu, MenuWithRestaurantDto menuDto) {
         menu.setDate(menuDto.getDate());
@@ -31,12 +25,4 @@ public class MenusUtil {
     }
 
 
-    public static MenuDto asTo(Menu menu) {
-        return new MenuDto(menu.getDate(), menu.getDish(), menu.getPrice());
-    }
-
-    public static MenuWithRestaurantDto withRestaurantAsTo(Menu menu) {
-        return new MenuWithRestaurantDto(menu.getDate(), menu.getDish(), menu.getPrice(),
-                RestaurantUtil.asTo(menu.getRestaurant()));
-    }
 }

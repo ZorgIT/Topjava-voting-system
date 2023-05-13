@@ -18,7 +18,6 @@ import ru.javaops.topjava2.util.RestaurantUtil;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class MenuService {
@@ -29,10 +28,6 @@ public class MenuService {
     public MenuService(MenuRepository menuRepository, RestaurantRepository restaurantRepository) {
         this.menuRepository = menuRepository;
         this.restaurantRepository = restaurantRepository;
-    }
-
-    public List<Menu> getMenuForRestaurantAndDate(Long restaurantId, LocalDate date) {
-        return menuRepository.findByRestaurantIdAndDate(restaurantId, date);
     }
 
     @Transactional(readOnly = true)
@@ -65,7 +60,7 @@ public class MenuService {
     public Menu createMenu(Long restaurantId, MenuWithoutDateDto menuDto) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new NotFoundException("Restaurant with id " + restaurantId + " not found"));
-        Menu menu = MenusUtil.createNewFromTo(menuDto,RestaurantUtil.asTo(restaurant));
+        Menu menu = MenusUtil.createNewFromTo(menuDto, RestaurantUtil.asTo(restaurant));
         menu.setDate(LocalDate.now());
         menu.setRestaurant(restaurant);
         return menuRepository.save(menu);

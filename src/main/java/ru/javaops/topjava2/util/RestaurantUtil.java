@@ -19,7 +19,7 @@ public class RestaurantUtil {
     }
 
     public RestaurantDto asTo(Restaurant restaurant) {
-        return new RestaurantDto(restaurant.getId(), restaurant.getName());
+        return new RestaurantDto(restaurant.getName());
     }
 
     public RestaurantWithIdDto asToWithId(Restaurant restaurant) {
