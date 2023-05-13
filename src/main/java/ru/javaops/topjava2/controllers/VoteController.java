@@ -6,19 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javaops.topjava2.dto.RestaurantWithDaymenuDto;
 import ru.javaops.topjava2.dto.VoteDto;
-import ru.javaops.topjava2.error.NotFoundException;
-import ru.javaops.topjava2.model.Restaurant;
-import ru.javaops.topjava2.model.Vote;
 import ru.javaops.topjava2.repository.MenuRepository;
 import ru.javaops.topjava2.repository.RestaurantRepository;
 import ru.javaops.topjava2.service.UserService;
 import ru.javaops.topjava2.service.VoteService;
 import ru.javaops.topjava2.util.RestaurantUtil;
 
-
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -36,8 +30,9 @@ public class VoteController {
         voteService.saveVote(voteDto);
         return ResponseEntity.ok(voteDto);
     }
+
     @GetMapping("/dayMenu")
-    public ResponseEntity<List<RestaurantWithDaymenuDto>> getRestaurantsWithMenus(){
+    public ResponseEntity<List<RestaurantWithDaymenuDto>> getRestaurantsWithMenus() {
         return ResponseEntity.ok(
                 voteService.getRestaurantsWithMenus().stream()
                         .map(RestaurantUtil::asToWithMenu)

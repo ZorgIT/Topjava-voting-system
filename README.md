@@ -1,10 +1,8 @@
-[Проект TopJava-2](https://javaops.ru/view/topjava2)
+[Project TopJava-28](https://javaops.ru/view/topjava2)
 ===============================
 
-#### Разбор решения [выпускного проекта TopJava](https://github.com/JavaOPs/topjava/blob/master/graduation.md)
-
-- Исходный код взят из миграции TopJava на Spring Boot (без еды)
-- На основе этого репозитория на курсе будет выполняться выпускной проект "Голосование за рестораны"
+- The source code was taken from the TopJava migration to Spring Boot (without food)
+- Based on this repository, the "Restaurant Voting" final project was developed.
 
 -------------------------------------------------------------
 
@@ -14,7 +12,7 @@
 
 -----------------------------------------------------
 [REST API documentation](http://localhost:8080/)  
-Креденшелы:
+Credentials:
 
 ```
 User:  user@yandex.ru / password
@@ -22,49 +20,50 @@ Admin: admin@gmail.com / admin
 Guest: guest@gmail.com / guest
 ```
 
-Разграничение доступа к использованию бизнес логики происходит на основании
-установленных ролей пользователей (ROLE_ADMIN или ROLE_USER)
+Access to the use of business logic is based on established user roles (ROLE_ADMIN or ROLE_USER).
 
-1. Администраторы(ROLE_ADMIN) могу добавлять рестораны и ежедневное меню:
+1. Administrators (ROLE_ADMIN) can add restaurants and daily menus:
 
-- Администратор может создать новый ресторан, отправив
-  POST-запрос к endpoint /api/admin/restaurants
-- Администратор может создать новое меню для ресторана, отправив
-  POST-запрос к endpoint /api/restaurants/{restaurantId}/menus
+- An administrator can create a new restaurant by sending a
+  POST request to the endpoint /api/admin/restaurants.
+- An administrator can create a new menu for a restaurant by sending a
+  POST request to the endpoint /api/restaurants/{restaurantId}/menus.
 
-2. Пользователи(ROLE_USER) могут голосовать за ресторан, где они хотят обедать сегодня:
+2. Users (ROLE_USER) can vote for the restaurant where they want to have lunch today:
 
-- Пользователь может проголосовать за ресторан, отправив
-  POST-запрос к endpoint /api/votes
-- В голосовании указываются идентификаторы пользователя и ресторана
-- Пользователь может голосовать только один раз в день(учитывается только последний голос)
-- Если пользователь голосует снова в тот же день до 11:00 считается что он передумал и
-  последний голос заменяет предыдущий голос.
+- A user can vote for a restaurant by sending a
+  POST request to the endpoint /api/votes.
+- The vote includes the user and restaurant IDs.
+- A user can only vote once a day (only the last vote is counted).
+- If a user votes again on the same day before 11:00,
+  it is considered that they changed their mind and the last vote replaces the previous one.
 
-3. Каждый ресторан предоставляет новое меню каждый день:
+3. Each restaurant provides a new menu every day:
 
-- Администратор может создать/обновить ежедневное меню для ресторана, отправив
-  PUT-запрос к endpoint /api/restaurants/{restaurantId}/menus/{menuId}
-- Администратор может удалить ежедневное меню для ресторана, отправив
-  DELETE-запрос к endpoint /api/restaurants/{restaurantId}/menus/{menuId}
+- An administrator can create/update the daily menu for a restaurant by sending a
+  PUT request to the endpoint /api/restaurants/{restaurantId}/menus/{menuId}.
+- An administrator can delete the daily menu for a restaurant by sending a
+  DELETE request to the endpoint /api/restaurants/{restaurantId}/menus/{menuId}.
 
-4. Если пользователь голосует снова в тот же день после 11:00, голос не может быть изменен:
+4. If a user votes again on the same day after 11:00, the vote cannot be changed:
 
-- Приложение проверяет время, когда пользователь отправляет новый запрос на голосование.
-- Если время после 11:00, приложение отклоняет новый запрос на голосование.
+- The application checks the time when the user submits a new vote request.
+- If the time is after 11:00, the application rejects the new vote request.
 
+-----------------------------------------------------
 REST API endpoints and examples
+-----------------------------------------------------
 
-1. Управление персональными данными (Доступ(GET\PUT\DELETE) - авторизованные пользователи; PUT - не авторизованные)
+1. Personal data management (Access(GET\PUT\DELETE) - authorized users; PUT - unauthorized users)
    GET /api/profile
-   Пример - получение данных авторизованного пользователя user@yandex.ru / password
+   Example - retrieve data of an authorized user user@yandex.ru / password
    curl -X 'GET' \
    'http://localhost:8080/api/profile' \
    -H 'accept: application/json' \
    -H 'Authorization: Basic dXNlckB5YW5kZXgucnU6cGFzc3dvcmQ='
 
    PUT /api/profile
-   Пример - изменение данных авторизованного пользователя user@yandex.ru / password
+   Example - modify data of an authorized user user@yandex.ru / password
    curl -X 'PUT' \
    'http://localhost:8080/api/profile' \
    -H 'accept: */*' \
@@ -77,7 +76,7 @@ REST API endpoints and examples
    }'
 
    POST /api/profile
-   Пример - создание нового пользователя (для неавторизованных)
+   Example - create a new user (for unauthorized users)
    curl -X 'POST' \
    'http://localhost:8080/api/profile' \
    -H 'accept: application/json' \
@@ -89,15 +88,14 @@ REST API endpoints and examples
    }'
 
    DELETE /api/profile
-   Пример удаления собственного профиля пользователя  
-   (на примере удаления созданного через PUT /api/profile ser2@yandex.ru / password)
+   Example - delete user's own profile
    curl -X 'DELETE' \
    'http://localhost:8080/api/profile' \
    -H 'accept: */*' \
-   -H 'Authorization: Basic dXNlcjJAeWFuZGV4LnJ1OnBhc3N3b3Jk'
+   -H 'Authorization: Basic dXNlckB5YW5kZXgucnU6cGFzc3dvcmQ'
 
-2. Администрирование пользовательских аккаунтов (Доступ - ROLE_ADMIN)
-   POST /api/admin/users - создание нового пользователя
+2. Administration of user accounts (Access - ROLE_ADMIN)
+   POST /api/admin/users - create a new user
    curl -X 'POST' \
    'http://localhost:8080/api/admin/users' \
    -H 'accept: application/json' \
@@ -109,25 +107,25 @@ REST API endpoints and examples
    "password": "password"
    }'
 
-   GET /api/admin/users - получение всех пользователей
+   GET /api/admin/users - retrieve all users
    curl -X 'GET' \
    'http://localhost:8080/api/admin/users' \
    -H 'accept: application/json' \
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
-   GET /api/admin/users - получение пользователя по email
+   GET /api/admin/users - retrieve a user by email
    curl -X 'GET' \
    'http://localhost:8080/api/admin/users/by-email?email=user%40yandex.ru' \
    -H 'accept: application/json' \
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
-   GET /api/admin/users/{userId} - получение пользователя по ID
+   GET /api/admin/users/{userId} - retrieve a user by ID
    curl -X 'GET' \
    'http://localhost:8080/api/admin/users/1' \
    -H 'accept: application/json' \
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
-   PUT /api/admin/users/{userId} - обновление пользователя по ID
+   PUT /api/admin/users/{userId} - update a user by ID
    curl -X 'PUT' \
    'http://localhost:8080/api/admin/users/1' \
    -H 'accept: */*' \
@@ -139,21 +137,21 @@ REST API endpoints and examples
    "password": "passwordd"
    }'
 
-   PATCH /api/admin/users/{userId} - включение\отключение учетной записи по ID
-   пример отключения пользователя c id 1
+   PATCH /api/admin/users/{userId} - enable/disable a user account by ID
+   example of disabling a user with ID 1
    curl -X 'PATCH' \
    'http://localhost:8080/api/admin/users/1?enabled=false' \
    -H 'accept: */*' \
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
-DELETE /api/admin/users/{userId} - удаление пользователя по ID
+DELETE /api/admin/users/{userId} - delete a user by ID
 curl -X 'DELETE' \
 'http://localhost:8080/api/admin/users/3' \
 -H 'accept: */*' \
 -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
-3. Администрирование ресторанов (Доступ - ROLE_ADMIN, AdminRestaurantController)
-   POST /api/admin/restaurants - создание нового ресторана
+3. Restaurant administration (Access - ROLE_ADMIN, AdminRestaurantController)
+   POST /api/admin/restaurants - create a new restaurant
    curl -X 'POST' \
    'http://localhost:8080/api/admin/restaurants' \
    -H 'accept: application/json' \
@@ -163,37 +161,37 @@ curl -X 'DELETE' \
    "name": "Grill"
    }'
 
-   GET /api/admin/restaurants - получение всех ресторанов
+   GET /api/admin/restaurants - retrieve all restaurants
    curl -X 'GET' \
    'http://localhost:8080/api/admin/restaurants' \
    -H 'accept: application/json' \
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
-   GET /api/admin/restaurants/{restaurantId} - получение ресторана по ID
+   GET /api/admin/restaurants/{restaurantId} - retrieve a restaurant by ID
    curl -X 'GET' \
    'http://localhost:8080/api/admin/restaurants/2' \
    -H 'accept: application/json' \
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
-   PUT /api/admin/restaurants/{restaurantId} - обновление ресторана по ID
+   PUT /api/admin/restaurants/{restaurantId} - update a restaurant by ID
    curl -X 'PUT' \
    'http://localhost:8080/api/admin/restaurants/1' \
    -H 'accept: application/json' \
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu' \
    -H 'Content-Type: application/json' \
    -d '{
-   "name": "Супер ресторан"
+   "name": "Super restaurant"
    }'
 
-   DELETE /api/admin/restaurants/{restaurantId} - Удаление ресторана по ID
+   DELETE /api/admin/restaurants/{restaurantId} - delete a restaurant by ID
    curl -X 'DELETE' \
    'http://localhost:8080/api/admin/restaurants/3' \
    -H 'accept: */*' \
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
-4. Администрирование меню
-   POST /api/admin/restaurants/{restaurantId}/menus - создание нового меню для ресторана на
-   сегодняшнюю дату (с учетом бизнес логики)
+4. Menu administration
+   POST /api/admin/restaurants/{restaurantId}/menus - create a new menu
+   for the restaurant on today's date (taking into account business logic)
    curl -X 'POST' \
    'http://localhost:8080/api/admin/restaurants/1/menus' \
    -H 'accept: application/json' \
@@ -204,14 +202,14 @@ curl -X 'DELETE' \
    "price": 100
    }'
 
-   GET /api/admin/restaurants/{restaurantId}/menus - получение всех меню конкретного ресторана
+   GET /api/admin/restaurants/{restaurantId}/menus - retrieve all menus for a specific restaurant
    curl -X 'GET' \
    'http://localhost:8080/api/admin/restaurants/1/menus' \
    -H 'accept: application/json' \
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
-   PUT /api/admin/restaurants/{restaurantId}/menus/{menuId} - обновление конкретного меню(по id),
-   в конкретном ресторане по его id Без валидации даты меню - админ понимает что делает)
+   PUT /api/admin/restaurants/{restaurantId}/menus/{menuId} - update a specific menu (by ID) 
+in a specific restaurant (by ID) without menu date validation (admin understands what they are doing)
    curl -X 'PUT' \
    'http://localhost:8080/api/admin/restaurants/1/menus/4' \
    -H 'accept: application/json' \
@@ -223,41 +221,39 @@ curl -X 'DELETE' \
    "date": "2023-05-13"
    }'
 
-DELETE /api/admin/restaurants/{restaurantId}/menus/{menuId} - для удаления меню в конкретном ресторане
+DELETE /api/admin/restaurants/{restaurantId}/menus/{menuId} - delete a menu in a specific restaurant
 curl -X 'DELETE' \
 'http://localhost:8080/api/admin/restaurants/1/menus/4' \
 -H 'accept: */*' \
 -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
-5. Администрирование голосов (AdminVoteController)
-   Авторизованные пользователи с ролью ROLE_ADMIN)
-   GET /api/admin/votes - получение всех голосов
+5. Vote administration (AdminVoteController) Authorized users with ROLE_ADMIN role
+   GET /api/admin/votes - retrieve all votes
    curl -X 'GET' \
    'http://localhost:8080/api/admin/votes' \
    -H 'accept: */*' \
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
-   GET /api/admin/votes{id}
-   информация по конкретному голосу
+   GET /api/admin/votes{id} retrieve information about a specific vote
    curl -X 'GET' \
    'http://localhost:8080/api/admin/votes/2' \
    -H 'accept: */*' \
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
-   
-   DELETE /api/admin/votes{id}
+
+   DELETE /api/admin/votes{id}  - delete a specific vote
    curl -X 'DELETE' \
    'http://localhost:8080/api/admin/votes/5' \
    -H 'accept: */*' \
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
-6. Vote Авторизованные пользователи с ролью ROLE_USER,
-   GET /api/votes/dayMenu - получение списка доступных на сегодняшний день к голосованию ресторанов и их меню
+6. Vote (Authorized users with ROLE_USER role)
+   GET /api/votes/dayMenu - retrieve a list of available restaurants and their menus for today's voting
    curl -X 'GET' \
    'http://localhost:8080/api/votes/dayMenu' \
    -H 'accept: */*' \
    -H 'Authorization: Basic dXNlckB5YW5kZXgucnU6cGFzc3dvcmQ='
 
-   POST /api/votes - голосование за выбранный ресторан(по ID) с понравившемся меню
+   POST /api/votes - vote for a selected restaurant (by ID) with a preferred menu
    curl -X 'POST' \
    'http://localhost:8080/api/votes' \
    -H 'accept: */*' \
@@ -266,15 +262,3 @@ curl -X 'DELETE' \
    -d '{
    "restaurantId": 1
    }'
-
-
-
-
-
-
-
-
-
-
-
-
