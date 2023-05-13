@@ -13,6 +13,7 @@ import ru.javaops.topjava2.error.IllegalRequestDataException;
 import ru.javaops.topjava2.model.Menu;
 import ru.javaops.topjava2.service.MenuService;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -38,8 +39,8 @@ public class AdminMenuController {
     }
 
     @GetMapping("/{restaurantId}/menus")
-    public ResponseEntity<Set<Menu>> getMenuForRestaurant(@PathVariable Long restaurantId) {
-        Set<Menu> menu = menuService.getMenuForRestaurant(restaurantId);
+    public ResponseEntity<List<Menu>> getMenuForRestaurant(@PathVariable Long restaurantId) {
+        List<Menu> menu = menuService.getMenuForRestaurant(restaurantId);
         return ResponseEntity.ok(menu);
     }
 

@@ -1,7 +1,6 @@
 package ru.javaops.topjava2.util;
 
 import lombok.experimental.UtilityClass;
-import org.modelmapper.ModelMapper;
 import ru.javaops.topjava2.model.Role;
 import ru.javaops.topjava2.model.User;
 import ru.javaops.topjava2.to.UserTo;
@@ -21,8 +20,8 @@ public class UsersUtil {
         return user;
     }
 
-    public static  UserTo asTo(User user) {
-        return new UserTo(user.getId(), user.getName(), user.getEmail(),user.getPassword());
+    public static UserTo asTo(User user) {
+        return new UserTo(user.getId(), user.getName(), user.getEmail(), user.getPassword());
     }
 
 

@@ -66,6 +66,7 @@ public class User extends NamedEntity implements HasIdAndEmail, Serializable {
 
     public User(User u) {
         this(u.id, u.name, u.email, u.password, u.enabled, u.registered, u.roles);
+        this.votes = new HashSet<>(u.votes);
     }
 
     public User(Integer id, String name, String email, String password, Role... roles) {

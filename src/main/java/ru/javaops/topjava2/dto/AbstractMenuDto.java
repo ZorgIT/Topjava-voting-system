@@ -32,4 +32,5 @@ public abstract class AbstractMenuDto {
     public BigDecimal getPrice() {
         return price;
     }
+
 }

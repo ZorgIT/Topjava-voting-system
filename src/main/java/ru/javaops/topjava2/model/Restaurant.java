@@ -1,8 +1,9 @@
 package ru.javaops.topjava2.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,9 +18,10 @@ public class Restaurant {
     private String name;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("menu")
+    //@JsonIgnoreProperties("menu")
+    @JsonManagedReference
     @OrderBy("date DESC")
-    private Set<Menu> menus;
+    private List<Menu> menus;
 
     public Long getId() {
         return id;
@@ -37,17 +39,17 @@ public class Restaurant {
         this.name = name;
     }
 
-    public Set<Menu> getMenus() {
+    public List<Menu> getMenus() {
         return menus;
     }
 
-    public void setMenus(Set<Menu> menus) {
+    public void setMenus(List<Menu> menus) {
         this.menus = menus;
     }
 
     public Restaurant() {
 
-    };
+    }
 
     public Restaurant(Long id, String name) {
         this.id = id;

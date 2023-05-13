@@ -25,4 +25,8 @@ public class RestaurantWithMenuDto extends AbstractRestaurantDto {
         return menus;
     }
 
+    public void setMenuDtos(List<MenuDto> menuDtos) {
+        this.menus = menuDtos;
+    }
+
 }

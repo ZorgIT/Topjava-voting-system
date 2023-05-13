@@ -36,7 +36,7 @@ public class MenuService {
     }
 
     @Transactional(readOnly = true)
-    public Set<Menu> getMenuForRestaurant(Long restaurantId) {
+    public List<Menu> getMenuForRestaurant(Long restaurantId) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new NotFoundException("Restaurant with id " +
                         restaurantId + " not found"));
