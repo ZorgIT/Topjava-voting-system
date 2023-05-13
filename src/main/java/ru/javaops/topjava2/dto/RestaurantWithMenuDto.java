@@ -3,9 +3,8 @@ package ru.javaops.topjava2.dto;
 import java.util.List;
 
 //TODO add valid data
-public class RestaurantWithMenuDto {
+public class RestaurantWithMenuDto extends AbstractRestaurantDto {
     private Long id;
-    private String name;
     private List<MenuDto> menus;
 
     public RestaurantWithMenuDto() {
@@ -13,17 +12,13 @@ public class RestaurantWithMenuDto {
     }
 
     public RestaurantWithMenuDto(Long id, String name, List<MenuDto> menus) {
+        super(name);
         this.id = id;
-        this.name = name;
         this.menus = menus;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public List<MenuDto> getMenus() {

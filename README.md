@@ -49,7 +49,7 @@ TODO List (прикидка решения):
 todo:
 REST API endpoints
 
-1. Администрирование Меню (Доступ - ROLE_ADMIN, AdminMenuController):
+1. Администрирование Меню (Доступ - ROLE_ADMIN, AdminMenuController) (checked):
    POST /api/admin/restaurants/{restaurantId}/menus - создание нового меню для ресторана на сегодняшнюю дату (checked)
    GET /api/admin/restaurants/{restaurantId}/menus - получение всех меню конкретного ресторана (checked)
    PUT /api/admin/restaurants/{restaurantId}/menus/{menuId} - обновление конкретного меню(по id), 
@@ -71,12 +71,12 @@ REST API endpoints
    PATCH /api/admin/users/{userId} - включение\отключение учетной записи по ID (checked)
    DELETE /api/admin/users/{userId} - удаление пользователя по ID (checked)
 
-4. Администрирование ресторанов (Доступ - ROLE_ADMIN, AdminRestaurantController)
-   POST /api/admin/restaurants - создание нового ресторана
-   GET /api/admin/restaurants - получение всех ресторанов
-   GET /api/admin/restaurants/{restaurantId} - получение ресторана по ID
-   PUT /api/admin/restaurants/{restaurantId} - обновление ресторана по ID
-   DELETE /api/admin/restaurants/{restaurantId} - Удаление ресторана по ID
+4. Администрирование ресторанов (Доступ - ROLE_ADMIN, AdminRestaurantController)  (checked)
+   POST /api/admin/restaurants - создание нового ресторана (checked)
+   GET /api/admin/restaurants - получение всех ресторанов (checked)
+   GET /api/admin/restaurants/{restaurantId} - получение ресторана по ID (checked)
+   PUT /api/admin/restaurants/{restaurantId} - обновление ресторана по ID  (checked)
+   DELETE /api/admin/restaurants/{restaurantId} - Удаление ресторана по ID (checked)
 
 5. VoteController (Доступ - авторизованные пользователи с ролью ROLE_USER)
    GET /api/votes - получение всех голосов

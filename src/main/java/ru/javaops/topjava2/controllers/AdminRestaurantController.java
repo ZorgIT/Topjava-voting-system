@@ -5,11 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.javaops.topjava2.dto.RestaurantDto;
+import ru.javaops.topjava2.dto.RestaurantWithIdDto;
 import ru.javaops.topjava2.model.Restaurant;
 import ru.javaops.topjava2.service.RestaurantService;
+import ru.javaops.topjava2.util.RestaurantUtil;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -23,35 +25,38 @@ public class AdminRestaurantController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant restaurant) {
-        Restaurant createdRestaurant = restaurantService.createRestaurant(restaurant);
+    public ResponseEntity<Restaurant> createRestaurant(@RequestBody RestaurantDto restaurant) {
+        Restaurant createdRestaurant = restaurantService.createRestaurant(RestaurantUtil.createNewFromTo(restaurant));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRestaurant);
     }
 
     @GetMapping()
-    public ResponseEntity<List<Restaurant>> getAllRestaurants() {
-        List<Restaurant> restaurants = restaurantService.getAllRestaurants();
+    public ResponseEntity<List<RestaurantDto>> getAllRestaurants() {
+        List<RestaurantDto> restaurants = restaurantService.getAllRestaurants();
         return ResponseEntity.ok(restaurants);
     }
 
     @GetMapping("/{restaurantId}")
     public ResponseEntity<Restaurant> getRestaurantById(@PathVariable Long restaurantId) {
-        Optional<Restaurant> restaurant = restaurantService.getRestaurantById(restaurantId);
-
-        if (restaurant.isPresent()) {
-            return ResponseEntity.ok(restaurant.get());
+        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+        if (restaurant != null) {
+            return ResponseEntity.ok(restaurant);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    //Todo: уточнить можно ли пользоваться мапперами
     @PutMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> updateRestaurant(@PathVariable Long restaurantId,
-                                                       @RequestBody Restaurant updatedRestaurant) {
-        Restaurant restaurant = restaurantService.updateRestaurant(restaurantId, updatedRestaurant);
-        return ResponseEntity.ok(restaurant);
-
+    public ResponseEntity<RestaurantWithIdDto> updateRestaurant(@PathVariable Long restaurantId,
+                                                                @RequestBody RestaurantDto updatedRestaurant) {
+        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+        if (restaurant != null) {
+            RestaurantUtil.updateFromTo(restaurant, updatedRestaurant);
+            restaurantService.updateRestaurant(restaurant);
+            return ResponseEntity.ok(RestaurantUtil.asToWithId(restaurant));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{restaurantId}")
