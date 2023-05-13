@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javaops.topjava2.model.User;
+import ru.javaops.topjava2.to.AdminUserTo;
 import ru.javaops.topjava2.to.UserTo;
 import ru.javaops.topjava2.util.UsersUtil;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.javaops.topjava2.util.validation.ValidationUtil.assureIdConsistent;
 import static ru.javaops.topjava2.util.validation.ValidationUtil.checkNew;
@@ -25,10 +27,10 @@ public class AdminUserController extends AbstractUserController {
 
     static final String REST_URL = "/api/admin/users";
 
-    @Override
+
     @GetMapping("/{userId}")
-    public User get(@PathVariable int userId) {
-        return super.get(userId);
+    public AdminUserTo getAdminUser(@PathVariable int userId) {
+        return UsersUtil.asAdminUserTo(super.get(userId));
     }
 
     @Override
@@ -39,16 +41,18 @@ public class AdminUserController extends AbstractUserController {
     }
 
     @GetMapping
-    public List<User> getAll() {
+    public List<AdminUserTo> getAll() {
         log.info("getAll");
-        return repository.findAll(Sort.by(Sort.Direction.ASC, "name", "email"));
+        return repository.findAll(Sort.by(Sort.Direction.ASC, "name", "email")).stream()
+                .map(UsersUtil::asAdminUserTo)
+                .collect(Collectors.toList());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> createWithLocation(@Valid @RequestBody UserTo user) {
+    public ResponseEntity<AdminUserTo> createWithLocation(@Valid @RequestBody UserTo user) {
         log.info("create {}", user);
         checkNew(user);
-        User created = repository.prepareAndSave(UsersUtil.createNewFromTo(user));
+        AdminUserTo created = UsersUtil.asAdminUserTo(repository.prepareAndSave(UsersUtil.createNewFromTo(user)));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -64,9 +68,9 @@ public class AdminUserController extends AbstractUserController {
     }
 
     @GetMapping("/by-email")
-    public User getByEmail(@RequestParam String email) {
+    public AdminUserTo getByEmail(@RequestParam String email) {
         log.info("getByEmail {}", email);
-        return repository.getExistedByEmail(email);
+        return UsersUtil.asAdminUserTo(repository.getExistedByEmail(email));
     }
 
     @PatchMapping("/{userId}")

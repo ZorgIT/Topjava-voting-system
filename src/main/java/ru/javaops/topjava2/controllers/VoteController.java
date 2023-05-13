@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.javaops.topjava2.dto.RestaurantWithDaymenuDto;
 import ru.javaops.topjava2.dto.VoteDto;
 import ru.javaops.topjava2.error.NotFoundException;
 import ru.javaops.topjava2.model.Restaurant;
@@ -12,11 +13,13 @@ import ru.javaops.topjava2.repository.MenuRepository;
 import ru.javaops.topjava2.repository.RestaurantRepository;
 import ru.javaops.topjava2.service.UserService;
 import ru.javaops.topjava2.service.VoteService;
+import ru.javaops.topjava2.util.RestaurantUtil;
 
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/votes")
@@ -28,32 +31,18 @@ public class VoteController {
         this.voteService = voteService;
     }
 
-
     @PostMapping
-    public ResponseEntity<Void> saveVote(@RequestBody @Valid VoteDto voteDto) {
+    public ResponseEntity<VoteDto> saveVote(@RequestBody @Valid VoteDto voteDto) {
         voteService.saveVote(voteDto);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(voteDto);
     }
-   //Нужно ли выносить в отдельный контроллер?
     @GetMapping("/dayMenu")
-    public ResponseEntity<List<Restaurant>> getRestaurantsWithMenus(){
-        List<Restaurant> Restaurant = voteService.getRestaurantsWithMenus();
-        return ResponseEntity.ok(Restaurant);
-    }
-
-    @GetMapping
-    public ResponseEntity<Collection<Vote>> getAllVotes() {
-        return ResponseEntity.ok(voteService.getAllVotes());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Vote> getVoteById(@PathVariable Long id) {
-        Optional<Vote> vote = voteService.getVoteById(id);
-        if (vote.isPresent()) {
-            return ResponseEntity.ok(vote.get());
-        } else {
-            throw new NotFoundException("Vote with id: " + id + " not found");
-        }
+    public ResponseEntity<List<RestaurantWithDaymenuDto>> getRestaurantsWithMenus(){
+        return ResponseEntity.ok(
+                voteService.getRestaurantsWithMenus().stream()
+                        .map(RestaurantUtil::asToWithMenu)
+                        .collect(Collectors.toList())
+        );
     }
 
 }

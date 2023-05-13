@@ -5,17 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaops.topjava2.dto.MenuDto;
-import ru.javaops.topjava2.dto.MenuWithRestaurantDto;
 import ru.javaops.topjava2.dto.MenuWithoutDateDto;
 import ru.javaops.topjava2.error.NotFoundException;
 import ru.javaops.topjava2.model.Menu;
 import ru.javaops.topjava2.model.Restaurant;
 import ru.javaops.topjava2.repository.MenuRepository;
 import ru.javaops.topjava2.repository.RestaurantRepository;
-import ru.javaops.topjava2.util.MenusUtil;
-import ru.javaops.topjava2.util.RestaurantUtil;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,22 +56,39 @@ public class MenuService {
 
 
     public Menu createMenu(Long restaurantId, MenuWithoutDateDto menuDto) {
+        LocalDateTime voteBoundaries = LocalDate.now().atTime(11, 0);
+        if (LocalDateTime.now().isAfter(voteBoundaries)) {
+            voteBoundaries = voteBoundaries.plusDays(1);
+        }
+        final LocalDateTime menuDate = voteBoundaries;
+
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new NotFoundException("Restaurant with id " + restaurantId + " not found"));
-        Menu menu = MenusUtil.createNewFromTo(menuDto, RestaurantUtil.asTo(restaurant));
-        menu.setDate(LocalDate.now());
-        menu.setRestaurant(restaurant);
-        return menuRepository.save(menu);
+
+        Menu existingMenu = menuRepository.findByRestaurantAndDate(restaurant, menuDate.toLocalDate());
+
+        if (existingMenu != null) {
+            return updateMenu(restaurantId, existingMenu.getId(),
+                    new MenuDto(menuDate.toLocalDate(), menuDto.getDish(), menuDto.getPrice()));
+        } else {
+            Menu menu = new Menu(menuDate.toLocalDate(), menuDto.getDish(), menuDto.getPrice(), restaurant);
+            return menuRepository.save(menu);
+        }
     }
 
+    @Transactional(readOnly = false)
     public Menu updateMenu(Long restaurantId, Long menuId, MenuDto updatedMenu) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new NotFoundException("Restaurant with id" + restaurantId + " not found"));
+                .orElseThrow(() -> new NotFoundException("Restaurant with id " + restaurantId + " not found"));
+
         Menu menu = menuRepository.findById(menuId)
                 .orElseThrow(() -> new NotFoundException("Menu with id " + menuId + " not found"));
-        MenusUtil.updateFromTo(menu, new MenuWithRestaurantDto(updatedMenu.getDate(),
-                updatedMenu.getDish(), updatedMenu.getPrice(),
-                RestaurantUtil.asTo(restaurant)));
+
+        menu.setDate(updatedMenu.getDate());
+        menu.setDish(updatedMenu.getDish());
+        menu.setPrice(updatedMenu.getPrice());
+        menu.setRestaurant(restaurant);
+
         return menuRepository.save(menu);
     }
 }

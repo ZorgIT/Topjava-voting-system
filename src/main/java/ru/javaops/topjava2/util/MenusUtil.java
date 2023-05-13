@@ -24,5 +24,15 @@ public class MenusUtil {
                 RestaurantUtil.createNewFromTo(restaurantDto));
     }
 
+    public static MenuWithoutDateDto createNewFromToWithoutDate(Menu menu) {
+        return new MenuWithoutDateDto(
+                menu.getDish(),
+                menu.getPrice()
+        );
+
+    }
+
+
+
 
 }

@@ -1,5 +1,12 @@
 package ru.javaops.topjava2.dto;
 
-public class MenuWithoutDateDto extends AbstractMenuDto {
+import java.math.BigDecimal;
 
+public class MenuWithoutDateDto extends AbstractMenuDto {
+    public MenuWithoutDateDto() {
+    }
+
+    public MenuWithoutDateDto(String dish, BigDecimal price) {
+        super(dish, price);
+    }
 }

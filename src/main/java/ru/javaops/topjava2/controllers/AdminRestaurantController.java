@@ -25,8 +25,9 @@ public class AdminRestaurantController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> createRestaurant(@RequestBody RestaurantDto restaurant) {
-        Restaurant createdRestaurant = restaurantService.createRestaurant(RestaurantUtil.createNewFromTo(restaurant));
+    public ResponseEntity<RestaurantWithIdDto> createRestaurant(@RequestBody RestaurantDto restaurant) {
+        RestaurantWithIdDto createdRestaurant = RestaurantUtil.asToWithId(restaurantService
+                .createRestaurant(RestaurantUtil.createNewFromTo(restaurant)));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRestaurant);
     }
 
@@ -37,8 +38,8 @@ public class AdminRestaurantController {
     }
 
     @GetMapping("/{restaurantId}")
-    public ResponseEntity<Restaurant> getRestaurantById(@PathVariable Long restaurantId) {
-        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+    public ResponseEntity<RestaurantDto> getRestaurantById(@PathVariable Long restaurantId) {
+        RestaurantDto restaurant = RestaurantUtil.asTo(restaurantService.getRestaurantById(restaurantId));
         if (restaurant != null) {
             return ResponseEntity.ok(restaurant);
         } else {

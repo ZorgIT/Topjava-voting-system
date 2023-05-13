@@ -106,4 +106,13 @@ public class VoteService {
                 })
                 .collect(Collectors.toList());
     }
+
+    public void deleteVoteById(Long voteId) {
+        Optional<Vote> vote = voteRepository.findById(voteId);
+        if (vote.isPresent()) {
+            voteRepository.delete(vote.get());
+        } else {
+            throw new IllegalArgumentException("Vote with id" + voteId +" not found");
+        }
+    }
 }
