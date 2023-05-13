@@ -9,4 +9,7 @@ public class VoteDto {
         return restaurantId;
     }
 
+    public void setRestaurantId(Long restaurantId) {
+        this.restaurantId = restaurantId;
+    }
 }
