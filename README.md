@@ -50,10 +50,11 @@ todo:
 REST API endpoints
 
 1. Администрирование Меню (Доступ - ROLE_ADMIN, AdminMenuController):
-   POST /api/admin/restaurants/{restaurantId}/menus - создание нового меню для ресторана
-   GET /api/admin/restaurants/{restaurantId}/menus - получение всех меню конкретного ресторана
-   PUT /api/admin/restaurants/{restaurantId}/menus/{menuId} - для обновления меню для в конкретном ресторане
-   DELETE /api/admin/restaurants/{restaurantId}/menus/{menuId} -для удаления меню для в конкретном ресторане
+   POST /api/admin/restaurants/{restaurantId}/menus - создание нового меню для ресторана на сегодняшнюю дату (checked)
+   GET /api/admin/restaurants/{restaurantId}/menus - получение всех меню конкретного ресторана (checked)
+   PUT /api/admin/restaurants/{restaurantId}/menus/{menuId} - обновление конкретного меню(по id), 
+в конкретном ресторане по его id  Без валидации даты меню - админ понимает что делает) (checked)
+   DELETE /api/admin/restaurants/{restaurantId}/menus/{menuId} - для удаления меню для в конкретном ресторане (checked)
 
 2. Управление Персональными данными (Доступ(GET\PUT\DELETE) - авторизованные пользователи; POST - не авторизованные) (checked)
    POST /api/profile - для создания нового пользователя #todo Добавить валидацию данных (checked)

@@ -49,6 +49,11 @@ public class Restaurant {
 
     };
 
+    public Restaurant(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "Restaurant{" +
