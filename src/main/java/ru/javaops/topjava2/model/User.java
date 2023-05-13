@@ -61,8 +61,12 @@ public class User extends NamedEntity implements HasIdAndEmail, Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Vote> votes = new HashSet<>();
+
     public User(User u) {
         this(u.id, u.name, u.email, u.password, u.enabled, u.registered, u.roles);
+        this.votes = new HashSet<>(u.votes);
     }
 
     public User(Integer id, String name, String email, String password, Role... roles) {
