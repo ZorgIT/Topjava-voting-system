@@ -48,8 +48,9 @@ public class AdminRestaurantController {
     }
 
     @PutMapping(value = "/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestaurantWithIdDto> updateRestaurant(@PathVariable Long restaurantId,
-                                                                @RequestBody RestaurantDto updatedRestaurant) {
+    public ResponseEntity<RestaurantWithIdDto> updateRestaurant(
+            @PathVariable Long restaurantId,
+            @RequestBody RestaurantDto updatedRestaurant) {
         Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
         if (restaurant != null) {
             RestaurantUtil.updateFromTo(restaurant, updatedRestaurant);

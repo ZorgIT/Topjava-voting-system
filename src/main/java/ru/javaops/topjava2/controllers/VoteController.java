@@ -6,9 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.javaops.topjava2.dto.RestaurantWithDaymenuDto;
 import ru.javaops.topjava2.dto.VoteDto;
-import ru.javaops.topjava2.repository.MenuRepository;
-import ru.javaops.topjava2.repository.RestaurantRepository;
-import ru.javaops.topjava2.service.UserService;
 import ru.javaops.topjava2.service.VoteService;
 import ru.javaops.topjava2.util.RestaurantUtil;
 
@@ -21,7 +18,7 @@ public class VoteController {
     private final VoteService voteService;
 
     @Autowired
-    public VoteController(VoteService voteService, UserService userService, MenuRepository menuRepository, RestaurantRepository restaurantRepository) {
+    public VoteController(VoteService voteService) {
         this.voteService = voteService;
     }
 

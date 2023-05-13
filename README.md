@@ -1,3 +1,4 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/d61659c7f5bf465eb147096531705863)](https://app.codacy.com/gh/ZorgIT/Topjava-voting-system/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [Project TopJava-28](https://javaops.ru/view/topjava2)
 ===============================
 

@@ -44,7 +44,8 @@ public class RestExceptionHandler {
     private final MessageSource messageSource;
 
     //    https://stackoverflow.com/a/52254601/548473
-    static final Map<Class<? extends Throwable>, ErrorType> HTTP_STATUS_MAP = new LinkedHashMap<>() {
+    static final Map<Class<? extends Throwable>
+            , ErrorType> HTTP_STATUS_MAP = new LinkedHashMap<>() {
         {
 // more specific first
             put(NotFoundException.class, NOT_FOUND);
@@ -87,16 +88,20 @@ public class RestExceptionHandler {
                 .findAny().map(Map.Entry::getValue);
         if (optType.isPresent()) {
             log.error(ERR_PFX + "Exception {} at request {}", ex, path);
-            return createProblemDetail(ex, optType.get(), ex.getMessage(), additionalParams);
+            return createProblemDetail(ex, optType.get()
+                    , ex.getMessage(), additionalParams);
         } else {
             Throwable root = getRootCause(ex);
             log.error(ERR_PFX + "Exception " + root + " at request " + path, root);
-            return createProblemDetail(ex, APP_ERROR, "Exception " + root.getClass().getSimpleName(), additionalParams);
+            return createProblemDetail(ex, APP_ERROR
+                    , "Exception " + root.getClass()
+                            .getSimpleName(), additionalParams);
         }
     }
 
     private ProblemDetail createProblemDetail(Exception ex, ErrorType type, String defaultDetail, @NonNull Map<String, Object> additionalParams) {
-        ErrorResponse.Builder builder = ErrorResponse.builder(ex, type.status, defaultDetail);
+        ErrorResponse.Builder builder = ErrorResponse.builder(ex
+                , type.status, defaultDetail);
         ProblemDetail pd = builder.build().updateAndGetBody(messageSource, LocaleContextHolder.getLocale());
         additionalParams.forEach(pd::setProperty);
         return pd;

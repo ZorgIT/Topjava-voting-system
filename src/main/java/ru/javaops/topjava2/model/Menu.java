@@ -30,7 +30,8 @@ public class Menu {
 
     }
 
-    public Menu(LocalDate date, String dish, BigDecimal price, Restaurant restaurant) {
+    public Menu(LocalDate date, String dish
+            , BigDecimal price, Restaurant restaurant) {
         this.date = date;
         this.dish = dish;
         this.price = price;
