@@ -144,11 +144,11 @@ REST API endpoints and examples
    -H 'accept: */*' \
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
-DELETE /api/admin/users/{userId} - delete a user by ID
-curl -X 'DELETE' \
-'http://localhost:8080/api/admin/users/3' \
--H 'accept: */*' \
--H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
+   DELETE /api/admin/users/{userId} - delete a user by ID
+   curl -X 'DELETE' \
+   'http://localhost:8080/api/admin/users/3' \
+   -H 'accept: */*' \
+   -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
 3. Restaurant administration (Access - ROLE_ADMIN, AdminRestaurantController)
    POST /api/admin/restaurants - create a new restaurant
@@ -221,11 +221,11 @@ in a specific restaurant (by ID) without menu date validation (admin understands
    "date": "2023-05-13"
    }'
 
-DELETE /api/admin/restaurants/{restaurantId}/menus/{menuId} - delete a menu in a specific restaurant
-curl -X 'DELETE' \
-'http://localhost:8080/api/admin/restaurants/1/menus/4' \
--H 'accept: */*' \
--H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
+   DELETE /api/admin/restaurants/{restaurantId}/menus/{menuId} - delete a menu in a specific restaurant
+   curl -X 'DELETE' \
+   'http://localhost:8080/api/admin/restaurants/1/menus/4' \
+   -H 'accept: */*' \
+   -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
 
 5. Vote administration (AdminVoteController) Authorized users with ROLE_ADMIN role
    GET /api/admin/votes - retrieve all votes
