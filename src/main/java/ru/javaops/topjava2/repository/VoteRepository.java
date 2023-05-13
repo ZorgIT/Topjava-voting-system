@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Long> {
     Optional<Vote> findByUserIdAndDate(Integer userId, LocalDate date);
+    Optional<Vote> findById(Long id);
 
     List<Vote> findByDate(LocalDate date);
 }

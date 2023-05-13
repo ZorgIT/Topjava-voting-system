@@ -52,11 +52,12 @@ REST API endpoints
 1. Администрирование Меню (Доступ - ROLE_ADMIN, AdminMenuController) (checked):
    POST /api/admin/restaurants/{restaurantId}/menus - создание нового меню для ресторана на сегодняшнюю дату (checked)
    GET /api/admin/restaurants/{restaurantId}/menus - получение всех меню конкретного ресторана (checked)
-   PUT /api/admin/restaurants/{restaurantId}/menus/{menuId} - обновление конкретного меню(по id), 
-в конкретном ресторане по его id  Без валидации даты меню - админ понимает что делает) (checked)
+   PUT /api/admin/restaurants/{restaurantId}/menus/{menuId} - обновление конкретного меню(по id),
+   в конкретном ресторане по его id Без валидации даты меню - админ понимает что делает) (checked)
    DELETE /api/admin/restaurants/{restaurantId}/menus/{menuId} - для удаления меню для в конкретном ресторане (checked)
 
-2. Управление Персональными данными (Доступ(GET\PUT\DELETE) - авторизованные пользователи; POST - не авторизованные) (checked)
+2. Управление Персональными данными (Доступ(GET\PUT\DELETE) - авторизованные пользователи; POST - не авторизованные) (
+   checked)
    POST /api/profile - для создания нового пользователя #todo Добавить валидацию данных (checked)
    GET /api/profile - получение данных текущего пользователя (checked)
    PUT /api/profile - обновление данных текущего пользователя (checked)
@@ -78,9 +79,11 @@ REST API endpoints
    PUT /api/admin/restaurants/{restaurantId} - обновление ресторана по ID  (checked)
    DELETE /api/admin/restaurants/{restaurantId} - Удаление ресторана по ID (checked)
 
-5. VoteController (Доступ - авторизованные пользователи с ролью ROLE_USER)
-   GET /api/votes - получение всех голосов
-   POST /api/votes - для создания голоса
+5. VoteController (Доступ - авторизованные пользователи с ролью ROLE_USER) (checked)
+   POST /api/votes - для создания голоса (checked)
+   GET /api/votes - получение всех голосов (checked)
+   GET /api/votes{id} (checked)
+   GET /api/votes/dayMenu - получение списка доступных к голосованию ресторанов и их меню (checked)
 
 Описание бизнес логики с учетом использования REST api:
 
@@ -105,12 +108,13 @@ REST API endpoints
 
 3. Каждый ресторан предоставляет новое меню каждый день:
 
-- Администратор может обновить ежедневное меню для ресторана, отправив
+- Администратор может создать/обновить ежедневное меню для ресторана, отправив
   PUT-запрос к endpoint /api/restaurants/{restaurantId}/menus/{menuId}
 - Администратор может удалить ежедневное меню для ресторана, отправив
   DELETE-запрос к endpoint /api/restaurants/{restaurantId}/menus/{menuId}
 
 4. Если пользователь голосует снова в тот же день после 11:00, голос не может быть изменен:
+
 - Приложение проверяет время, когда пользователь отправляет новый запрос на голосование.
 - Если время после 11:00, приложение отклоняет новый запрос на голосование.
 
