@@ -34,8 +34,7 @@ ROLE_ADMIN or ROLE_USER).
   POST request to the endpoint /api/restaurants/{restaurantId}/menus.
 
 ### 2. Users (ROLE_USER) can vote for the restaurant where they want to have
-
-lunch today:
+### lunch today:
 
 - A user can vote for a restaurant by sending a
   POST request to the endpoint /api/votes.
@@ -54,8 +53,7 @@ lunch today:
   DELETE request to the endpoint /api/restaurants/{restaurantId}/menus/{menuId}.
 
 ### 4. If a user votes again on the same day after 11:00, the vote cannot be
-
-changed:
+### changed:
 
 - The application checks the time when the user submits a new vote request.
 - If the time is after 11:00, the application rejects the new vote request.
@@ -360,7 +358,7 @@ retrieve all votes
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-### GET /api/admin/votes{id}
+### GET /api/admin/votes/{voteId}
 
 retrieve information about a specific vote
 
@@ -371,7 +369,7 @@ retrieve information about a specific vote
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-### DELETE /api/admin/votes{id}
+### DELETE /api/admin/votes/{voteId}
 
 delete a specific vote
 
