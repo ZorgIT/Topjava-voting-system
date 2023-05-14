@@ -29,7 +29,9 @@ public class VoteService {
 
     @Autowired
 
-    public VoteService(VoteRepository voteRepository, MenuRepository menuRepository, RestaurantRepository restaurantRepository) {
+    public VoteService(VoteRepository voteRepository,
+                       MenuRepository menuRepository,
+                       RestaurantRepository restaurantRepository) {
         this.voteRepository = voteRepository;
         this.menuRepository = menuRepository;
         this.restaurantRepository = restaurantRepository;
@@ -52,7 +54,9 @@ public class VoteService {
         }
         final LocalDateTime menuDate = voteBoundaries;
 
-        Optional<Vote> voteOptional = voteRepository.findByUserIdAndDate(authUser.id(), menuDate.toLocalDate());
+        Optional<Vote> voteOptional =
+                voteRepository.findByUserIdAndDate(authUser.id(),
+                        menuDate.toLocalDate());
         if (voteOptional.isPresent()) {
             Vote vote = voteOptional.get();
             if (LocalDateTime.now().isAfter(voteBoundaries)) {
@@ -63,19 +67,25 @@ public class VoteService {
             if (restaurant.getId().equals(voteDto.getRestaurantId())) {
                 return;
             }
-            List<Menu> menuList = menuRepository.findByRestaurantIdAndDate(voteDto.getRestaurantId(), menuDate.toLocalDate());
+            List<Menu> menuList =
+                    menuRepository.findByRestaurantIdAndDate(voteDto.getRestaurantId(),
+                            menuDate.toLocalDate());
             if (!menuList.isEmpty()) {
                 Menu menuDay = menuList.get(0);
                 vote.setMenu(menuDay);
                 voteRepository.save(vote);
             } else {
-                throw new NotFoundException("Menu not found for restaurant with id: " + voteDto.getRestaurantId() + " and date: " + menuDate.toLocalDate());
+                throw new NotFoundException("Menu not found for restaurant with id: " +
+                        voteDto.getRestaurantId() + " and date: " +
+                        menuDate.toLocalDate());
             }
         } else {
             Restaurant restaurant = restaurantRepository.findById(voteDto.getRestaurantId())
                     .orElseThrow(() -> new NotFoundException("Restaurant with id: "
                             + voteDto.getRestaurantId() + " not found"));
-            List<Menu> menuList = menuRepository.findByRestaurantIdAndDate(restaurant.getId(), menuDate.toLocalDate());
+            List<Menu> menuList =
+                    menuRepository.findByRestaurantIdAndDate(restaurant.getId(),
+                            menuDate.toLocalDate());
             if (!menuList.isEmpty()) {
                 Menu menu = menuList.get(0);
                 Vote vote = new Vote();
@@ -84,7 +94,9 @@ public class VoteService {
                 vote.setMenu(menu);
                 voteRepository.save(vote);
             } else {
-                throw new NotFoundException("Menu not found for restaurant with id: " + restaurant.getId() + " and date: " + menuDate.toLocalDate());
+                throw new NotFoundException("Menu not found for restaurant with id: " +
+                        restaurant.getId() + " and date: " +
+                        menuDate.toLocalDate());
             }
         }
     }
@@ -112,7 +124,9 @@ public class VoteService {
         if (vote.isPresent()) {
             voteRepository.delete(vote.get());
         } else {
-            throw new IllegalArgumentException("Vote with id" + voteId +" not found");
+            throw new IllegalArgumentException("Vote with id" +
+                    voteId +
+                    " not found");
         }
     }
 }

@@ -14,7 +14,8 @@ public class RestaurantUtil {
         return restaurant;
     }
 
-    public Restaurant updateFromTo(Restaurant restaurant, RestaurantDto restaurantDto) {
+    public Restaurant updateFromTo(Restaurant restaurant,
+                                   RestaurantDto restaurantDto) {
         restaurant.setName(restaurantDto.getName());
         return restaurant;
     }
@@ -24,7 +25,8 @@ public class RestaurantUtil {
     }
 
     public RestaurantWithIdDto asToWithId(Restaurant restaurant) {
-        return new RestaurantWithIdDto(restaurant.getId(), restaurant.getName());
+        return new RestaurantWithIdDto(restaurant.getId(),
+                restaurant.getName());
     }
 
     public RestaurantWithDaymenuDto asToWithMenu(Restaurant restaurant) {

@@ -23,7 +23,8 @@ public class MenuService {
     private final RestaurantRepository restaurantRepository;
 
     @Autowired
-    public MenuService(MenuRepository menuRepository, RestaurantRepository restaurantRepository) {
+    public MenuService(MenuRepository menuRepository,
+                       RestaurantRepository restaurantRepository) {
         this.menuRepository = menuRepository;
         this.restaurantRepository = restaurantRepository;
     }
@@ -46,7 +47,8 @@ public class MenuService {
             if (existingMenu.getRestaurant().getId().equals(restaurantId)) {
                 menuRepository.delete(existingMenu);
             } else {
-                throw new NotFoundException("Menu with id " + menuId + "does not belong to restaurant with id " +
+                throw new NotFoundException("Menu with id " +
+                        menuId + "does not belong to restaurant with id " +
                         restaurantId);
             }
         } else {
@@ -63,15 +65,22 @@ public class MenuService {
         final LocalDateTime menuDate = voteBoundaries;
 
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new NotFoundException("Restaurant with id " + restaurantId + " not found"));
+                .orElseThrow(() -> new NotFoundException("Restaurant with id "
+                        + restaurantId + " not found"));
 
-        Menu existingMenu = menuRepository.findByRestaurantAndDate(restaurant, menuDate.toLocalDate());
+        Menu existingMenu = menuRepository.findByRestaurantAndDate(restaurant,
+                menuDate.toLocalDate());
 
         if (existingMenu != null) {
             return updateMenu(restaurantId, existingMenu.getId(),
-                    new MenuDto(menuDate.toLocalDate(), menuDto.getDish(), menuDto.getPrice()));
+                    new MenuDto(menuDate.toLocalDate(),
+                            menuDto.getDish(),
+                            menuDto.getPrice()));
         } else {
-            Menu menu = new Menu(menuDate.toLocalDate(), menuDto.getDish(), menuDto.getPrice(), restaurant);
+            Menu menu = new Menu(menuDate.toLocalDate(),
+                    menuDto.getDish(),
+                    menuDto.getPrice(),
+                    restaurant);
             return menuRepository.save(menu);
         }
     }
@@ -79,10 +88,12 @@ public class MenuService {
     @Transactional(readOnly = false)
     public Menu updateMenu(Long restaurantId, Long menuId, MenuDto updatedMenu) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new NotFoundException("Restaurant with id " + restaurantId + " not found"));
+                .orElseThrow(() -> new NotFoundException("Restaurant with id " +
+                        restaurantId + " not found"));
 
         Menu menu = menuRepository.findById(menuId)
-                .orElseThrow(() -> new NotFoundException("Menu with id " + menuId + " not found"));
+                .orElseThrow(() -> new NotFoundException("Menu with id " +
+                        menuId + " not found"));
 
         menu.setDate(updatedMenu.getDate());
         menu.setDish(updatedMenu.getDish());

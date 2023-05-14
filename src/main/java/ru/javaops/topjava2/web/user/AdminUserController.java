@@ -21,7 +21,8 @@ import static ru.javaops.topjava2.util.validation.ValidationUtil.assureIdConsist
 import static ru.javaops.topjava2.util.validation.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = AdminUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminUserController.REST_URL,
+        produces = MediaType.APPLICATION_JSON_VALUE)
 // TODO: cache only most requested, seldom changed data!
 public class AdminUserController extends AbstractUserController {
 
@@ -43,7 +44,8 @@ public class AdminUserController extends AbstractUserController {
     @GetMapping
     public List<AdminUserTo> getAll() {
         log.info("getAll");
-        return repository.findAll(Sort.by(Sort.Direction.ASC, "name", "email")).stream()
+        return repository.findAll(Sort.by(Sort.Direction.ASC,
+                        "name", "email")).stream()
                 .map(UsersUtil::asAdminUserTo)
                 .collect(Collectors.toList());
     }

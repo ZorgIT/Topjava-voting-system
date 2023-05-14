@@ -32,12 +32,17 @@ public class AdminUserTo extends NamedTo implements HasIdAndEmail {
     Date registered = new Date();
     Set<Role> roles;
 
-    public AdminUserTo(Integer id, String name, String email, String password,Boolean enabled ,Set<Role> roles) {
+    public AdminUserTo(Integer id,
+                       String name,
+                       String email,
+                       String password,
+                       Boolean enabled,
+                       Set<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.roles = roles;
-        this.enabled=enabled;
+        this.enabled = enabled;
     }
 
     @Override

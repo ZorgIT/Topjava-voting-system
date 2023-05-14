@@ -16,7 +16,9 @@ public class Restaurant {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "restaurant",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     //@JsonIgnoreProperties("menu")
     @JsonManagedReference
     @OrderBy("date DESC")

@@ -68,8 +68,10 @@ public class RestExceptionHandler {
     };
 
     @ExceptionHandler(BindException.class)
-    public ProblemDetail bindException(BindException ex, HttpServletRequest request) {
-        return processException(ex, request, Map.of("invalid_params", getErrorMap(ex.getBindingResult())));
+    public ProblemDetail bindException(BindException ex,
+                                       HttpServletRequest request) {
+        return processException(ex, request, Map.of("invalid_params",
+                getErrorMap(ex.getBindingResult())));
     }
 
     //   https://howtodoinjava.com/spring-mvc/spring-problemdetail-errorresponse/#5-adding-problemdetail-to-custom-exceptions
@@ -78,7 +80,9 @@ public class RestExceptionHandler {
         return processException(ex, request, Map.of());
     }
 
-    protected ProblemDetail processException(@NonNull Exception ex, HttpServletRequest request, Map<String, Object> additionalParams) {
+    protected ProblemDetail processException(@NonNull Exception ex,
+                                             HttpServletRequest request,
+                                             Map<String, Object> additionalParams) {
         String path = request.getRequestURI();
         Class<? extends Exception> exClass = ex.getClass();
         Optional<ErrorType> optType = HTTP_STATUS_MAP.entrySet().stream()
@@ -99,10 +103,14 @@ public class RestExceptionHandler {
         }
     }
 
-    private ProblemDetail createProblemDetail(Exception ex, ErrorType type, String defaultDetail, @NonNull Map<String, Object> additionalParams) {
+    private ProblemDetail createProblemDetail(Exception ex,
+                                              ErrorType type,
+                                              String defaultDetail,
+                                              @NonNull Map<String, Object> additionalParams) {
         ErrorResponse.Builder builder = ErrorResponse.builder(ex
                 , type.status, defaultDetail);
-        ProblemDetail pd = builder.build().updateAndGetBody(messageSource, LocaleContextHolder.getLocale());
+        ProblemDetail pd = builder.build().updateAndGetBody(messageSource,
+                LocaleContextHolder.getLocale());
         additionalParams.forEach(pd::setProperty);
         return pd;
     }
@@ -120,7 +128,10 @@ public class RestExceptionHandler {
     }
 
     public String getErrorMessage(ObjectError error) {
-        return messageSource.getMessage(error.getCode(), error.getArguments(), error.getDefaultMessage(), LocaleContextHolder.getLocale());
+        return messageSource.getMessage(error.getCode(),
+                error.getArguments(),
+                error.getDefaultMessage(),
+                LocaleContextHolder.getLocale());
     }
 
     //  https://stackoverflow.com/a/65442410/548473

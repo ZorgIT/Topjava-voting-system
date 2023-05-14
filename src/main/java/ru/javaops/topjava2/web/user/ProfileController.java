@@ -20,7 +20,8 @@ import static ru.javaops.topjava2.util.validation.ValidationUtil.assureIdConsist
 import static ru.javaops.topjava2.util.validation.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = ProfileController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = ProfileController.REST_URL,
+        produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 // TODO: cache only most requested data!
 public class ProfileController extends AbstractUserController {
@@ -53,7 +54,8 @@ public class ProfileController extends AbstractUserController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    public void update(@RequestBody @Valid UserTo userTo, @AuthenticationPrincipal AuthUser authUser) {
+    public void update(@RequestBody @Valid UserTo userTo,
+                       @AuthenticationPrincipal AuthUser authUser) {
         log.info("update {} with id={}", userTo, authUser.id());
         assureIdConsistent(userTo, authUser.id());
         User user = authUser.getUser();

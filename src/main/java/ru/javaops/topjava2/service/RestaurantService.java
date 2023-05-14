@@ -28,7 +28,8 @@ public class RestaurantService {
 
     public Restaurant getRestaurantById(Long id) {
         return restaurantRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Restaurant with id:" + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("Restaurant with id:" +
+                        id + " not found"));
     }
 
     public List<RestaurantDto> getAllRestaurants() {
@@ -38,7 +39,8 @@ public class RestaurantService {
     }
 
     public Restaurant updateRestaurant(Restaurant updatedRestaurant) {
-        Optional<Restaurant> restaurant = restaurantRepository.findById(updatedRestaurant.getId());
+        Optional<Restaurant> restaurant =
+                restaurantRepository.findById(updatedRestaurant.getId());
         if (restaurant.isPresent()) {
             Restaurant existingRestaurant = restaurant.get();
             existingRestaurant.setName(updatedRestaurant.getName());
@@ -50,7 +52,8 @@ public class RestaurantService {
     }
 
     public void deleteRestaurant(Long restaurantId) {
-        Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantId);
+        Optional<Restaurant> restaurant =
+                restaurantRepository.findById(restaurantId);
         if (restaurant.isPresent()) {
             restaurantRepository.delete(restaurant.get());
         } else {
