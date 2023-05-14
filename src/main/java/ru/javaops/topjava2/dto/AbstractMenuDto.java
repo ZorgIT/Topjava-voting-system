@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 
 public abstract class AbstractMenuDto {
 
-
     @NotBlank
     @Size(min = 1, max = 255)
     private String dish;

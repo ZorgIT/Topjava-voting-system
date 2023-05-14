@@ -12,6 +12,8 @@ public class MenuDto extends AbstractMenuDto {
     @PastOrPresent
     private LocalDate date;
 
+    private Long id;
+
     public MenuDto() {
 
     }
@@ -23,5 +25,13 @@ public class MenuDto extends AbstractMenuDto {
 
     public LocalDate getDate() {
         return date;
+    }
+
+
+    public Long getId() {
+        return this.id;
+    }
+    public void setId(Integer id) {
+
     }
 }
