@@ -2,12 +2,14 @@
 [Project TopJava-28](https://javaops.ru/view/topjava2)
 ===============================
 
-- The source code was taken from the TopJava migration to Spring Boot (without food)
+- The source code was taken from the TopJava migration to Spring Boot (without
+  food)
 - Based on this repository, the "Restaurant Voting" final project was developed.
 
 -------------------------------------------------------------
 
-- Stack: [JDK 17](http://jdk.java.net/17/), Spring Boot 3.x, Lombok, H2, Caffeine Cache, SpringDoc OpenApi 2.x,
+- Stack: [JDK 17](http://jdk.java.net/17/), Spring Boot 3.x, Lombok, H2,
+  Caffeine Cache, SpringDoc OpenApi 2.x,
   Mapstruct, Liquibase
 - Run: `mvn spring-boot:run` in root directory.
 
@@ -21,7 +23,8 @@ Admin: admin@gmail.com / admin
 Guest: guest@gmail.com / guest
 ```
 
-Access to the use of business logic is based on established user roles (ROLE_ADMIN or ROLE_USER).
+Access to the use of business logic is based on established user roles (
+ROLE_ADMIN or ROLE_USER).
 
 ### 1. Administrators (ROLE_ADMIN) can add restaurants and daily menus:
 
@@ -30,7 +33,8 @@ Access to the use of business logic is based on established user roles (ROLE_ADM
 - An administrator can create a new menu for a restaurant by sending a
   POST request to the endpoint /api/restaurants/{restaurantId}/menus.
 
-### 2. Users (ROLE_USER) can vote for the restaurant where they want to have 
+### 2. Users (ROLE_USER) can vote for the restaurant where they want to have
+
 lunch today:
 
 - A user can vote for a restaurant by sending a
@@ -38,16 +42,19 @@ lunch today:
 - The vote includes the user and restaurant IDs.
 - A user can only vote once a day (only the last vote is counted).
 - If a user votes again on the same day before 11:00,
-  it is considered that they changed their mind and the last vote replaces the previous one.
+  it is considered that they changed their mind and the last vote replaces the
+  previous one.
 
 ### 3. Each restaurant provides a new menu every day:
 
-- An administrator can create/update the daily menu for a restaurant by sending a
+- An administrator can create/update the daily menu for a restaurant by sending
+  a
   PUT request to the endpoint /api/restaurants/{restaurantId}/menus/{menuId}.
 - An administrator can delete the daily menu for a restaurant by sending a
   DELETE request to the endpoint /api/restaurants/{restaurantId}/menus/{menuId}.
 
-### 4. If a user votes again on the same day after 11:00, the vote cannot be 
+### 4. If a user votes again on the same day after 11:00, the vote cannot be
+
 changed:
 
 - The application checks the time when the user submits a new vote request.
@@ -57,10 +64,14 @@ changed:
 REST API endpoints and examples
 -----------------------------------------------------
 
-## 1. Personal data management 
+## 1. Personal data management
+
 (Access(GET\PUT\DELETE) - authorized users; PUT unauthorized users)
-###   GET /api/profile
-   Example - retrieve data of an authorized user user@yandex.ru / password
+
+### GET /api/profile
+
+Example - retrieve data of an authorized user user@yandex.ru / password
+
    ```
    curl -X 'GET' \
    'http://localhost:8080/api/profile' \
@@ -68,8 +79,10 @@ REST API endpoints and examples
    -H 'Authorization: Basic dXNlckB5YW5kZXgucnU6cGFzc3dvcmQ='
    ```
 
-###   PUT /api/profile
-   Example - modify data of an authorized user user@yandex.ru / password
+### PUT /api/profile
+
+Example - modify data of an authorized user user@yandex.ru / password
+
    ```
    curl -X 'PUT' \
    'http://localhost:8080/api/profile' \
@@ -83,8 +96,10 @@ REST API endpoints and examples
    }'
    ```
 
-###   POST /api/profile
-   Example - create a new user (for unauthorized users)
+### POST /api/profile
+
+Example - create a new user (for unauthorized users)
+
    ```
    curl -X 'POST' \
    'http://localhost:8080/api/profile' \
@@ -97,8 +112,10 @@ REST API endpoints and examples
    }'
    ```
 
-###   DELETE /api/profile
-   Example - delete user's own profile
+### DELETE /api/profile
+
+Example - delete user's own profile
+
    ```
    curl -X 'DELETE' \
    'http://localhost:8080/api/profile' \
@@ -107,9 +124,13 @@ REST API endpoints and examples
    ```
 
 ## 2. User accounts administration
+
 (Access - ROLE_ADMIN)
-###   POST /api/admin/users
-   create a new user
+
+### POST /api/admin/users
+
+create a new user
+
    ```
    curl -X 'POST' \
    'http://localhost:8080/api/admin/users' \
@@ -123,8 +144,10 @@ REST API endpoints and examples
    }'
    ```
 
-###   GET /api/admin/users
-   retrieve all users
+### GET /api/admin/users
+
+retrieve all users
+
    ```
    curl -X 'GET' \
    'http://localhost:8080/api/admin/users' \
@@ -132,8 +155,10 @@ REST API endpoints and examples
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-###   GET /api/admin/users
-   retrieve a user by email
+### GET /api/admin/users
+
+retrieve a user by email
+
    ```
    curl -X 'GET' \
    'http://localhost:8080/api/admin/users/by-email?email=user%40yandex.ru' \
@@ -141,8 +166,10 @@ REST API endpoints and examples
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-###   GET /api/admin/users/{userId}
-   retrieve a user by ID
+### GET /api/admin/users/{userId}
+
+retrieve a user by ID
+
    ```
    curl -X 'GET' \
    'http://localhost:8080/api/admin/users/1' \
@@ -150,8 +177,10 @@ REST API endpoints and examples
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-###   PUT /api/admin/users/{userId}
-   update a user by ID
+### PUT /api/admin/users/{userId}
+
+update a user by ID
+
    ```
    curl -X 'PUT' \
    'http://localhost:8080/api/admin/users/1' \
@@ -165,9 +194,11 @@ REST API endpoints and examples
    }'
    ```
 
-###   PATCH /api/admin/users/{userId}
-   enable/disable a user account by ID 
-   in example disable a user with ID 1
+### PATCH /api/admin/users/{userId}
+
+enable/disable a user account by ID
+in example disable a user with ID 1
+
    ```
    curl -X 'PATCH' \
    'http://localhost:8080/api/admin/users/1?enabled=false' \
@@ -175,8 +206,10 @@ REST API endpoints and examples
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-###   DELETE /api/admin/users/{userId}
-   delete a user by ID
+### DELETE /api/admin/users/{userId}
+
+delete a user by ID
+
    ```
    curl -X 'DELETE' \
    'http://localhost:8080/api/admin/users/3' \
@@ -184,10 +217,14 @@ REST API endpoints and examples
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-## 3. Restaurant administration 
+## 3. Restaurant administration
+
 (Access - ROLE_ADMIN)
-###   POST /api/admin/restaurants
-   create a new restaurant
+
+### POST /api/admin/restaurants
+
+create a new restaurant
+
    ```
    curl -X 'POST' \
    'http://localhost:8080/api/admin/restaurants' \
@@ -199,8 +236,10 @@ REST API endpoints and examples
    }'
    ```
 
-###   GET /api/admin/restaurants 
-   retrieve all restaurants
+### GET /api/admin/restaurants
+
+retrieve all restaurants
+
    ```
    curl -X 'GET' \
    'http://localhost:8080/api/admin/restaurants' \
@@ -208,8 +247,10 @@ REST API endpoints and examples
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-###   GET /api/admin/restaurants/{restaurantId}
-   retrieve a restaurant by ID
+### GET /api/admin/restaurants/{restaurantId}
+
+retrieve a restaurant by ID
+
    ```
    curl -X 'GET' \
    'http://localhost:8080/api/admin/restaurants/2' \
@@ -217,8 +258,10 @@ REST API endpoints and examples
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-###   PUT /api/admin/restaurants/{restaurantId}
-   update a restaurant by ID
+### PUT /api/admin/restaurants/{restaurantId}
+
+update a restaurant by ID
+
    ```
    curl -X 'PUT' \
    'http://localhost:8080/api/admin/restaurants/1' \
@@ -230,8 +273,10 @@ REST API endpoints and examples
    }'
    ```
 
-###   DELETE /api/admin/restaurants/{restaurantId}
-   delete a restaurant by ID
+### DELETE /api/admin/restaurants/{restaurantId}
+
+delete a restaurant by ID
+
    ```
    curl -X 'DELETE' \
    'http://localhost:8080/api/admin/restaurants/3' \
@@ -240,10 +285,14 @@ REST API endpoints and examples
    ```
 
 ## 4. Menu administration
+
 (Access - ROLE_ADMIN)
-###   POST /api/admin/restaurants/{restaurantId}/menus 
-   create a new menu for the restaurant on today's date (taking into account 
+
+### POST /api/admin/restaurants/{restaurantId}/menus
+
+create a new menu for the restaurant on today's date (taking into account
 business logic)
+
    ```
    curl -X 'POST' \
    'http://localhost:8080/api/admin/restaurants/1/menus' \
@@ -257,7 +306,9 @@ business logic)
    ```
 
 ### GET /api/admin/restaurants/{restaurantId}/menus
-   retrieve all menus for a specific restaurant
+
+retrieve all menus for a specific restaurant
+
    ```
    curl -X 'GET' \
    'http://localhost:8080/api/admin/restaurants/1/menus' \
@@ -265,9 +316,11 @@ business logic)
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-### PUT /api/admin/restaurants/{restaurantId}/menus/{menuId} 
-   update a specific menu (by ID) in a specific restaurant (by ID) without menu 
+### PUT /api/admin/restaurants/{restaurantId}/menus/{menuId}
+
+update a specific menu (by ID) in a specific restaurant (by ID) without menu
 date validation (admin understands what they are doing)
+
    ```
    curl -X 'PUT' \
    'http://localhost:8080/api/admin/restaurants/1/menus/4' \
@@ -282,7 +335,9 @@ date validation (admin understands what they are doing)
    ```
 
 ### DELETE /api/admin/restaurants/{restaurantId}/menus/{menuId}
-   delete a menu in a specific restaurant
+
+delete a menu in a specific restaurant
+
    ```
    curl -X 'DELETE' \
    'http://localhost:8080/api/admin/restaurants/1/menus/4' \
@@ -291,9 +346,13 @@ date validation (admin understands what they are doing)
    ```
 
 ## 5. Vote administration
+
 (Access - ROLE_ADMIN)
+
 ### GET /api/admin/votes
-   retrieve all votes
+
+retrieve all votes
+
    ```
    curl -X 'GET' \
    'http://localhost:8080/api/admin/votes' \
@@ -301,8 +360,10 @@ date validation (admin understands what they are doing)
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-### GET /api/admin/votes{id} 
-   retrieve information about a specific vote
+### GET /api/admin/votes{id}
+
+retrieve information about a specific vote
+
    ```
    curl -X 'GET' \
    'http://localhost:8080/api/admin/votes/2' \
@@ -310,8 +371,10 @@ date validation (admin understands what they are doing)
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-### DELETE /api/admin/votes{id} 
-   delete a specific vote
+### DELETE /api/admin/votes{id}
+
+delete a specific vote
+
    ```
    curl -X 'DELETE' \
    'http://localhost:8080/api/admin/votes/5' \
@@ -319,10 +382,14 @@ date validation (admin understands what they are doing)
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-## 6. Vote 
+## 6. Vote
+
 (Access - Authorized users with ROLE_USER)
+
 ### GET /api/votes/dayMenu
-   retrieve a list of available restaurants and their menus for today's voting
+
+retrieve a list of available restaurants and their menus for today's voting
+
    ```
    curl -X 'GET' \
    'http://localhost:8080/api/votes/dayMenu' \
@@ -331,8 +398,10 @@ date validation (admin understands what they are doing)
    ```
 
 ### POST /api/votes
-   vote for a selected restaurant (by ID) with a preferred 
+
+vote for a selected restaurant (by ID) with a preferred
 menu
+
    ```
    curl -X 'POST' \
    'http://localhost:8080/api/votes' \
