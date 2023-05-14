@@ -12,7 +12,7 @@ import java.util.List;
 public interface MenuRepository extends JpaRepository<Menu, Long> {
     List<Menu> findByRestaurantIdAndDate(Long restaurantId, LocalDate date);
 
-    Menu findByRestaurantAndDate(Restaurant restaurant,LocalDate date);
+    Menu findByRestaurantAndDate(Restaurant restaurant, LocalDate date);
 
 
 }

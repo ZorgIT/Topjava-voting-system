@@ -26,7 +26,8 @@ import java.util.Optional;
 @Slf4j
 @AllArgsConstructor
 public class SecurityConfig {
-    public static final PasswordEncoder PASSWORD_ENCODER = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    public static final PasswordEncoder PASSWORD_ENCODER =
+            PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
     private final UserRepository userRepository;
     private final RestAuthenticationEntryPoint authenticationEntryPoint;
@@ -43,7 +44,8 @@ public class SecurityConfig {
             Optional<User> optionalUser = userRepository
                     .findByEmailIgnoreCase(email);
             return new AuthUser(optionalUser.orElseThrow(
-                    () -> new UsernameNotFoundException("User '" + email + "' was not found")));
+                    () -> new UsernameNotFoundException("User '" +
+                            email + "' was not found")));
         };
     }
 
@@ -51,7 +53,10 @@ public class SecurityConfig {
     //  https://stackoverflow.com/a/61147599/548473
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers("/", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**");
+        return web -> web.ignoring().requestMatchers("/",
+                "/v3/api-docs/**",
+                "/swagger-ui.html",
+                "/swagger-ui/**");
     }
 
     @Bean

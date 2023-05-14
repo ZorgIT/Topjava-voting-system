@@ -1,6 +1,7 @@
 package ru.javaops.topjava2.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,9 +15,10 @@ public class MenuDto extends AbstractMenuDto {
     public MenuDto() {
 
     }
+
     public MenuDto(LocalDate date, String dish, BigDecimal price) {
         super(dish, price);
-        this.date=date;
+        this.date = date;
     }
 
     public LocalDate getDate() {

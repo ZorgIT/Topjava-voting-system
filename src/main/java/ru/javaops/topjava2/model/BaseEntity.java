@@ -17,10 +17,10 @@ import ru.javaops.topjava2.HasId;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseEntity implements Persistable<Integer>, HasId {
 
-    //Todo определиться с id пользователя - Integer или Long(на сколько много пользователей по заданию?)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY) // https://stackoverflow.com/a/28025008/548473
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    // https://stackoverflow.com/a/28025008/548473
     protected Integer id;
 
     // doesn't work for hibernate lazy proxy

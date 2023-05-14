@@ -14,7 +14,8 @@ import ru.javaops.topjava2.util.RestaurantUtil;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminRestaurantController.REST_URL,
+        produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminRestaurantController {
     static final String REST_URL = "/api/admin/restaurants";
     private final RestaurantService restaurantService;

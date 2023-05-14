@@ -16,7 +16,8 @@ import ru.javaops.topjava2.service.MenuService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = AdminMenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminMenuController.REST_URL,
+        produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminMenuController {
     static final String REST_URL = "/api/admin/restaurants";
     private final MenuService menuService;
