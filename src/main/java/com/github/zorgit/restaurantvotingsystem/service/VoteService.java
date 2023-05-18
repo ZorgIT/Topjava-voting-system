@@ -12,7 +12,7 @@ import com.github.zorgit.restaurantvotingsystem.error.VoteChangeNotAllowedExcept
 import com.github.zorgit.restaurantvotingsystem.model.Menu;
 import com.github.zorgit.restaurantvotingsystem.model.Restaurant;
 import com.github.zorgit.restaurantvotingsystem.model.Vote;
-import com.github.zorgit.restaurantvotingsystem.web.AuthUser;
+import com.github.zorgit.restaurantvotingsystem.util.user.AuthUser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -101,23 +101,7 @@ public class VoteService {
         }
     }
 
-    @Transactional(readOnly = true)
-    public List<Restaurant> getRestaurantsWithMenus() {
-        LocalDateTime voteBoundaries = LocalDate.now().atTime(11, 0);
-        if (LocalDateTime.now().isAfter(voteBoundaries)) {
-            voteBoundaries = voteBoundaries.plusDays(1);
-        }
-        final LocalDateTime menuDate = voteBoundaries;
-        return restaurantRepository.findAll().stream()
-                .filter(restaurant -> !menuRepository.findByRestaurantIdAndDate(restaurant.getId(),
-                        menuDate.toLocalDate()).isEmpty())
-                .peek(restaurant -> {
-                    List<Menu> menus = menuRepository.findByRestaurantIdAndDate(restaurant.getId(),
-                            menuDate.toLocalDate());
-                    restaurant.setMenus(menus);
-                })
-                .collect(Collectors.toList());
-    }
+
 
     public void deleteVoteById(Long voteId) {
         Optional<Vote> vote = voteRepository.findById(voteId);

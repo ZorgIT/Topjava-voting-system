@@ -1,4 +1,4 @@
-package com.github.zorgit.restaurantvotingsystem.to;
+package com.github.zorgit.restaurantvotingsystem.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

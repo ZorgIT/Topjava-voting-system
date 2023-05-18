@@ -1,4 +1,4 @@
-package com.github.zorgit.restaurantvotingsystem.web;
+package com.github.zorgit.restaurantvotingsystem.util.user;
 
 import com.github.zorgit.restaurantvotingsystem.model.Role;
 import com.github.zorgit.restaurantvotingsystem.model.User;

@@ -8,10 +8,6 @@ public class AbstractRestaurantDto {
     @Size(min = 1, max = 255)
     private String name;
 
-    public AbstractRestaurantDto() {
-
-    }
-
     public AbstractRestaurantDto(String name) {
         this.name = name;
     }

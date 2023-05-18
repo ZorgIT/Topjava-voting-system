@@ -28,19 +28,20 @@ public class AdminRestaurantController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestaurantWithIdDto> createRestaurant(@RequestBody RestaurantDto restaurant) {
         RestaurantWithIdDto createdRestaurant = RestaurantUtil.asToWithId(restaurantService
-                .createRestaurant(RestaurantUtil.createNewFromTo(restaurant)));
+                .create(RestaurantUtil.createNewFromTo(restaurant)));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRestaurant);
     }
 
     @GetMapping()
-    public ResponseEntity<List<RestaurantDto>> getAllRestaurants() {
-        List<RestaurantDto> restaurants = restaurantService.getAllRestaurants();
+    public ResponseEntity<List<RestaurantWithIdDto>> getAllRestaurants() {
+        List<RestaurantWithIdDto> restaurants =
+                RestaurantUtil.asToListWithId(restaurantService.findAll());
         return ResponseEntity.ok(restaurants);
     }
 
     @GetMapping("/{restaurantId}")
     public ResponseEntity<RestaurantDto> getRestaurantById(@PathVariable Long restaurantId) {
-        RestaurantDto restaurant = RestaurantUtil.asTo(restaurantService.getRestaurantById(restaurantId));
+        RestaurantDto restaurant = RestaurantUtil.asTo(restaurantService.findById(restaurantId));
         if (restaurant != null) {
             return ResponseEntity.ok(restaurant);
         } else {
@@ -52,10 +53,10 @@ public class AdminRestaurantController {
     public ResponseEntity<RestaurantWithIdDto> updateRestaurant(
             @PathVariable Long restaurantId,
             @RequestBody RestaurantDto updatedRestaurant) {
-        Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+        Restaurant restaurant = restaurantService.findById(restaurantId);
         if (restaurant != null) {
             RestaurantUtil.updateFromTo(restaurant, updatedRestaurant);
-            restaurantService.updateRestaurant(restaurant);
+            restaurantService.update(restaurant);
             return ResponseEntity.ok(RestaurantUtil.asToWithId(restaurant));
         } else {
             return ResponseEntity.notFound().build();
@@ -64,7 +65,7 @@ public class AdminRestaurantController {
 
     @DeleteMapping("/{restaurantId}")
     public ResponseEntity<Void> deleteRestaurant(@PathVariable Long restaurantId) {
-        restaurantService.deleteRestaurant(restaurantId);
+        restaurantService.delete(restaurantId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -6,6 +6,10 @@ import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithDaymenuDto;
 import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithIdDto;
 import com.github.zorgit.restaurantvotingsystem.model.Restaurant;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @UtilityClass
 public class RestaurantUtil {
     public Restaurant createNewFromTo(RestaurantDto restaurantDto) {
@@ -27,6 +31,12 @@ public class RestaurantUtil {
     public RestaurantWithIdDto asToWithId(Restaurant restaurant) {
         return new RestaurantWithIdDto(restaurant.getId(),
                 restaurant.getName());
+    }
+
+    public List<RestaurantWithIdDto> asToListWithId(List<Restaurant> restaurants) {
+        return restaurants.stream()
+                .map(r -> new RestaurantWithIdDto(r.getId(),r.getName()))
+                .collect(Collectors.toList());
     }
 
     public RestaurantWithDaymenuDto asToWithMenu(Restaurant restaurant) {

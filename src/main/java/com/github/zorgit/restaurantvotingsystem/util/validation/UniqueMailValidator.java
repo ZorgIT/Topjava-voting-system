@@ -1,6 +1,7 @@
-package com.github.zorgit.restaurantvotingsystem.web.user;
+package com.github.zorgit.restaurantvotingsystem.util.validation;
 
 import com.github.zorgit.restaurantvotingsystem.repository.UserRepository;
+import com.github.zorgit.restaurantvotingsystem.util.user.AuthUser;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import com.github.zorgit.restaurantvotingsystem.HasIdAndEmail;
-import com.github.zorgit.restaurantvotingsystem.web.AuthUser;
 
 @Component
 @AllArgsConstructor

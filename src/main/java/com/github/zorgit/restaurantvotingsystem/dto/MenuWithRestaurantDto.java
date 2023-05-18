@@ -13,15 +13,6 @@ public class MenuWithRestaurantDto extends AbstractMenuDto {
     @NotNull
     private RestaurantDto restaurant;
 
-    public MenuWithRestaurantDto(LocalDate date,
-                                 String dish,
-                                 BigDecimal price,
-                                 RestaurantDto restaurant) {
-        super(dish, price);
-        this.date = date;
-        this.restaurant = restaurant;
-    }
-
     public RestaurantDto getRestaurant() {
         return restaurant;
     }

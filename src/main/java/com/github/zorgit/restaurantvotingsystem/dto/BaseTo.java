@@ -1,4 +1,4 @@
-package com.github.zorgit.restaurantvotingsystem.to;
+package com.github.zorgit.restaurantvotingsystem.dto;
 
 import com.github.zorgit.restaurantvotingsystem.HasId;
 import io.swagger.v3.oas.annotations.media.Schema;

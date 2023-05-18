@@ -11,10 +11,6 @@ public class MenuDto extends AbstractMenuDto {
     @PastOrPresent
     private LocalDate date;
 
-    public MenuDto() {
-
-    }
-
     public MenuDto(LocalDate date, String dish, BigDecimal price) {
         super(dish, price);
         this.date = date;

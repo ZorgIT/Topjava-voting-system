@@ -1,17 +1,17 @@
 package com.github.zorgit.restaurantvotingsystem.controllers;
 
 
+import com.github.zorgit.restaurantvotingsystem.dto.MenuDto;
+import com.github.zorgit.restaurantvotingsystem.dto.MenuWithoutDateDto;
+import com.github.zorgit.restaurantvotingsystem.error.IllegalRequestDataException;
+import com.github.zorgit.restaurantvotingsystem.model.Menu;
+import com.github.zorgit.restaurantvotingsystem.service.MenuService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import com.github.zorgit.restaurantvotingsystem.dto.MenuDto;
-import com.github.zorgit.restaurantvotingsystem.dto.MenuWithoutDateDto;
-import com.github.zorgit.restaurantvotingsystem.error.IllegalRequestDataException;
-import com.github.zorgit.restaurantvotingsystem.model.Menu;
-import com.github.zorgit.restaurantvotingsystem.service.MenuService;
 
 import java.util.List;
 
@@ -34,13 +34,20 @@ public class AdminMenuController {
         if (bindingResult.hasErrors()) {
             throw new IllegalRequestDataException("Incorrect input data" + bindingResult);
         }
-        Menu createdMenu = menuService.createMenu(restaurantId, menu);
+        Menu createdMenu = menuService.saveOrUpdate(restaurantId, menu);
         return ResponseEntity.ok(createdMenu);
     }
 
     @GetMapping("/{restaurantId}/menus")
-    public ResponseEntity<List<Menu>> getMenuForRestaurant(@PathVariable Long restaurantId) {
-        List<Menu> menu = menuService.getMenuForRestaurant(restaurantId);
+    public ResponseEntity<List<Menu>> getMenusForRestaurant(@PathVariable Long restaurantId) {
+        List<Menu> menu = menuService.findAllByRestaurantId(restaurantId);
+        return ResponseEntity.ok(menu);
+    }
+
+    @GetMapping("/{restaurantId}/menus/{menuId}")
+    public ResponseEntity<Menu> getMenu(@PathVariable Long restaurantId,
+                                        @PathVariable Long menuId) {
+        Menu menu = menuService.getOneByIdAndRestaurantId(menuId, restaurantId);
         return ResponseEntity.ok(menu);
     }
 
@@ -48,13 +55,13 @@ public class AdminMenuController {
     public ResponseEntity<Menu> updateMenu(@PathVariable Long restaurantId,
                                            @PathVariable Long menuId,
                                            @RequestBody MenuDto updatedMenu) {
-        Menu menu = menuService.updateMenu(restaurantId, menuId, updatedMenu);
+        Menu menu = menuService.update(restaurantId, menuId, updatedMenu);
         return ResponseEntity.ok(menu);
     }
 
     @DeleteMapping("/{restaurantId}/menus/{menuId}")
     public ResponseEntity<Void> deleteMenu(@PathVariable Long restaurantId, @PathVariable Long menuId) {
-        menuService.deleteMenu(restaurantId, menuId);
+        menuService.delete(restaurantId, menuId);
         return ResponseEntity.noContent().build();
     }
 }

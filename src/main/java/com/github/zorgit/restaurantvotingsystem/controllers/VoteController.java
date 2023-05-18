@@ -28,13 +28,4 @@ public class VoteController {
         return ResponseEntity.ok(voteDto);
     }
 
-    @GetMapping("/dayMenu")
-    public ResponseEntity<List<RestaurantWithDaymenuDto>> getRestaurantsWithMenus() {
-        return ResponseEntity.ok(
-                voteService.getRestaurantsWithMenus().stream()
-                        .map(RestaurantUtil::asToWithMenu)
-                        .collect(Collectors.toList())
-        );
-    }
-
 }

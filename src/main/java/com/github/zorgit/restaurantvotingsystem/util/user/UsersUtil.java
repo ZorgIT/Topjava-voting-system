@@ -1,10 +1,10 @@
-package com.github.zorgit.restaurantvotingsystem.util;
+package com.github.zorgit.restaurantvotingsystem.util.user;
 
 import com.github.zorgit.restaurantvotingsystem.model.Role;
-import com.github.zorgit.restaurantvotingsystem.to.AdminUserTo;
+import com.github.zorgit.restaurantvotingsystem.dto.AdminUserTo;
 import lombok.experimental.UtilityClass;
 import com.github.zorgit.restaurantvotingsystem.model.User;
-import com.github.zorgit.restaurantvotingsystem.to.UserTo;
+import com.github.zorgit.restaurantvotingsystem.dto.UserTo;
 
 @UtilityClass
 public class UsersUtil {

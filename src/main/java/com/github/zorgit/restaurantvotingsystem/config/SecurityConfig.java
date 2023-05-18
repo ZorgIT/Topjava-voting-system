@@ -17,7 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.github.zorgit.restaurantvotingsystem.model.Role;
 import com.github.zorgit.restaurantvotingsystem.model.User;
 import com.github.zorgit.restaurantvotingsystem.repository.UserRepository;
-import com.github.zorgit.restaurantvotingsystem.web.AuthUser;
+import com.github.zorgit.restaurantvotingsystem.util.user.AuthUser;
 
 import java.util.Optional;
 

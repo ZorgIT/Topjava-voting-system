@@ -1,4 +1,4 @@
-package com.github.zorgit.restaurantvotingsystem.web.user;
+package com.github.zorgit.restaurantvotingsystem.controllers;
 
 import com.github.zorgit.restaurantvotingsystem.util.validation.ValidationUtil;
 import jakarta.validation.Valid;
@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.zorgit.restaurantvotingsystem.model.User;
-import com.github.zorgit.restaurantvotingsystem.to.UserTo;
-import com.github.zorgit.restaurantvotingsystem.util.UsersUtil;
-import com.github.zorgit.restaurantvotingsystem.web.AuthUser;
+import com.github.zorgit.restaurantvotingsystem.dto.UserTo;
+import com.github.zorgit.restaurantvotingsystem.util.user.UsersUtil;
+import com.github.zorgit.restaurantvotingsystem.util.user.AuthUser;
 
 import java.net.URI;
 

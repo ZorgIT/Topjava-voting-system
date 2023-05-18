@@ -1,7 +1,8 @@
-package com.github.zorgit.restaurantvotingsystem.web.user;
+package com.github.zorgit.restaurantvotingsystem.controllers;
 
 import com.github.zorgit.restaurantvotingsystem.model.User;
 import com.github.zorgit.restaurantvotingsystem.repository.UserRepository;
+import com.github.zorgit.restaurantvotingsystem.util.validation.UniqueMailValidator;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
