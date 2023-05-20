@@ -4,6 +4,7 @@ import com.github.zorgit.restaurantvotingsystem.model.Vote;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public interface VoteRepository extends JpaRepository<Vote, Long> {
     Optional<Vote> findByUserIdAndDateTime(Integer userId, LocalDateTime dateTime);
 
+    @Nullable
     Optional<Vote> findById(Long id);
 
     @Query("SELECT v FROM Vote v " +

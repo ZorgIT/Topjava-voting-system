@@ -1,7 +1,6 @@
 package com.github.zorgit.restaurantvotingsystem.controllers;
 
 import com.github.zorgit.restaurantvotingsystem.dto.UserVoteDto;
-import com.github.zorgit.restaurantvotingsystem.error.NotFoundException;
 import com.github.zorgit.restaurantvotingsystem.service.VoteService;
 import com.github.zorgit.restaurantvotingsystem.util.user.AuthUser;
 import jakarta.validation.Valid;

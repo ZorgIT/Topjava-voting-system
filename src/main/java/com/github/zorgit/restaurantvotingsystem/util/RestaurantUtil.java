@@ -1,12 +1,11 @@
 package com.github.zorgit.restaurantvotingsystem.util;
 
-import lombok.experimental.UtilityClass;
 import com.github.zorgit.restaurantvotingsystem.dto.RestaurantDto;
 import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithDaymenuDto;
 import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithIdDto;
 import com.github.zorgit.restaurantvotingsystem.model.Restaurant;
+import lombok.experimental.UtilityClass;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,7 @@ public class RestaurantUtil {
 
     public List<RestaurantWithIdDto> asToListWithId(List<Restaurant> restaurants) {
         return restaurants.stream()
-                .map(r -> new RestaurantWithIdDto(r.getId(),r.getName()))
+                .map(r -> new RestaurantWithIdDto(r.getId(), r.getName()))
                 .collect(Collectors.toList());
     }
 

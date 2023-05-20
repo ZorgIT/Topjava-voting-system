@@ -3,7 +3,6 @@ package com.github.zorgit.restaurantvotingsystem.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class MenuWithRestaurantDto extends AbstractMenuDto {
