@@ -9,7 +9,7 @@ public class MenusUtil {
 
     public static MenuWithoutDateDto createNewFromToWithoutDate(Menu menu) {
         return new MenuWithoutDateDto(
-                menu.getDish(),
+                menu.getDishName(),
                 menu.getPrice()
         );
 

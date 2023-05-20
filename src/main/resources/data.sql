@@ -16,7 +16,7 @@ VALUES ('Ресторан 1'),
        ('Ресторан 4 скоро открытие');
 
 
-INSERT INTO menus(date_time_stamp, dish, price, restaurant_id)
+INSERT INTO menus_item(date_time_stamp, dish_name, price, restaurant_id)
 VALUES ('2023-05-10 10:02:01', 'Борщ с салом', 150.00, 1),
        ('2023-05-10 10:02:01', 'Салат с креветкой', 130.00, 2),
        ('2023-05-10 10:02:01', 'Стейк', 140.00, 3),

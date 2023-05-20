@@ -103,7 +103,7 @@ public class VoteService {
                 Menu menu = menuList.get(0);
                 Vote vote = new Vote();
                 vote.setUser(authUser.getUser());
-                vote.setDate(menuDate);
+                vote.setDateTime(menuDate);
                 vote.setMenu(menu);
                 voteRepository.save(vote);
             } else {

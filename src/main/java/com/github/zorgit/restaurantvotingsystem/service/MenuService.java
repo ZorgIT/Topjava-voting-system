@@ -95,7 +95,7 @@ public class MenuService {
             menu.setRestaurant(restaurant);
         }
 
-        menu.setDish(menuDto.getDish());
+        menu.setDishName(menuDto.getDish());
         menu.setPrice(menuDto.getPrice());
 
         return menuRepository.save(menu);
@@ -113,7 +113,7 @@ public class MenuService {
         }
 
         menu.setDateTime(updatedMenu.getDate());
-        menu.setDish(updatedMenu.getDish());
+        menu.setDishName(updatedMenu.getDish());
         menu.setPrice(updatedMenu.getPrice());
 
         return menuRepository.save(menu);
