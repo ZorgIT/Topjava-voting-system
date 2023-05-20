@@ -34,6 +34,7 @@ ROLE_ADMIN or ROLE_USER).
   POST request to the endpoint /api/restaurants/{restaurantId}/menus.
 
 ### 2. Users (ROLE_USER) can vote for the restaurant where they want to have
+
 ### lunch today:
 
 - A user can vote for a restaurant by sending a
@@ -53,6 +54,7 @@ ROLE_ADMIN or ROLE_USER).
   DELETE request to the endpoint /api/restaurants/{restaurantId}/menus/{menuId}.
 
 ### 4. If a user votes again on the same day after 11:00, the vote cannot be
+
 ### changed:
 
 - The application checks the time when the user submits a new vote request.
@@ -314,22 +316,33 @@ retrieve all menus for a specific restaurant
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
+### GET /api/admin/restaurants/{restaurantId}/menus
+
+retrieve menu details for give restaraunt id and menu id
+
+   ```
+curl -X 'GET' \
+  'http://localhost:8080/api/admin/restaurants/1/menus/1' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
+   ```
+
 ### PUT /api/admin/restaurants/{restaurantId}/menus/{menuId}
 
 update a specific menu (by ID) in a specific restaurant (by ID) without menu
 date validation (admin understands what they are doing)
 
    ```
-   curl -X 'PUT' \
-   'http://localhost:8080/api/admin/restaurants/1/menus/4' \
-   -H 'accept: application/json' \
-   -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu' \
-   -H 'Content-Type: application/json' \
-   -d '{
-   "dish": "Burger",
-   "price": 100,
-   "date": "2023-05-13"
-   }'
+curl -X 'PUT' \
+  'http://localhost:8080/api/admin/restaurants/1/menus/3' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Basic dXNlckB5YW5kZXgucnU6cGFzc3dvcmQ=' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "date": "2023-05-20T19:47:00.345Z",
+  "dishName": "Burger",
+  "price": 100
+}'
    ```
 
 ### DELETE /api/admin/restaurants/{restaurantId}/menus/{menuId}
@@ -380,11 +393,11 @@ delete a specific vote
    -H 'Authorization: Basic YWRtaW5AZ21haWwuY29tOmFkbWlu'
    ```
 
-## 6. Vote
+## 6. Menu
 
-(Access - Authorized users with ROLE_USER)
+(Access - Authorized users)
 
-### GET /api/votes/dayMenu
+### GET /api/votes/day-menus
 
 retrieve a list of available restaurants and their menus for today's voting
 
@@ -395,18 +408,54 @@ retrieve a list of available restaurants and their menus for today's voting
    -H 'Authorization: Basic dXNlckB5YW5kZXgucnU6cGFzc3dvcmQ='
    ```
 
+## 7. Vote
+
+(Access - Authorized users with ROLE_USER)
+
+### GET /api/votes/
+
+retrieve a list of votes for authorized user
+
+   ```
+curl -X 'GET' \
+  'http://localhost:8080/api/votes' \
+  -H 'accept: */*' \
+  -H 'Authorization: Basic dXNlckB5YW5kZXgucnU6cGFzc3dvcmQ='
+   ```
+
 ### POST /api/votes
 
 vote for a selected restaurant (by ID) with a preferred
 menu
 
    ```
-   curl -X 'POST' \
-   'http://localhost:8080/api/votes' \
-   -H 'accept: */*' \
-   -H 'Authorization: Basic dXNlckB5YW5kZXgucnU6cGFzc3dvcmQ=' \
-   -H 'Content-Type: application/json' \
-   -d '{
-   "restaurantId": 1
-   }'
+curl -X 'POST' \
+  'http://localhost:8080/api/votes?restaurantId=1' \
+  -H 'accept: */*' \
+  -H 'Authorization: Basic dXNlckB5YW5kZXgucnU6cGFzc3dvcmQ=' \
+  -d ''
+   ```
+
+### GET /api/votes/{id}
+
+retrieve info about vote (available for personal vote)
+
+   ```
+curl -X 'POST' \
+  'http://localhost:8080/api/votes?restaurantId=1' \
+  -H 'accept: */*' \
+  -H 'Authorization: Basic dXNlckB5YW5kZXgucnU6cGFzc3dvcmQ=' \
+  -d ''
+   ```
+
+### GET /api/votes/{id}
+
+retrieve info about last vote (available for authorized user)
+
+   ```
+curl -X 'POST' \
+  'http://localhost:8080/api/votes?restaurantId=1' \
+  -H 'accept: */*' \
+  -H 'Authorization: Basic dXNlckB5YW5kZXgucnU6cGFzc3dvcmQ=' \
+  -d ''
    ```
