@@ -1,7 +1,6 @@
 package com.github.zorgit.restaurantvotingsystem.service;
 
 import com.github.zorgit.restaurantvotingsystem.dto.MenuDto;
-import com.github.zorgit.restaurantvotingsystem.dto.MenuWithoutDateDto;
 import com.github.zorgit.restaurantvotingsystem.error.NotFoundException;
 import com.github.zorgit.restaurantvotingsystem.model.Menu;
 import com.github.zorgit.restaurantvotingsystem.model.Restaurant;
@@ -12,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,26 +70,20 @@ public class MenuService {
         }
     }
 
-    public Menu saveOrUpdate(Long restaurantId, MenuWithoutDateDto menuDto) {
-        LocalDateTime voteBoundaries = LocalDate.now().atTime(11, 0);
-        if (LocalDateTime.now().isAfter(voteBoundaries)) {
-            voteBoundaries = voteBoundaries.plusDays(1);
-        }
-        final LocalDateTime menuDate = voteBoundaries;
-
+    public Menu saveOrUpdate(Long restaurantId, MenuDto menuDto) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new NotFoundException("Restaurant with id "
                         + restaurantId + " not found"));
 
         Menu existingMenu = menuRepository.findByRestaurantAndDateTime(restaurant,
-                menuDate);
+                menuDto.getDate());
 
         Menu menu;
         if (existingMenu != null) {
             menu = existingMenu;
         } else {
             menu = new Menu();
-            menu.setDateTime(menuDate);
+            menu.setDateTime(menuDto.getDate());
             menu.setRestaurant(restaurant);
         }
 

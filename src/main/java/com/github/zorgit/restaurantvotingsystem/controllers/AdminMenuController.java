@@ -29,7 +29,7 @@ public class AdminMenuController {
 
     @PostMapping("/{restaurantId}/menus")
     public ResponseEntity<Menu> createMenu(@PathVariable Long restaurantId,
-                                           @Valid @RequestBody MenuWithoutDateDto menu,
+                                           @Valid @RequestBody MenuDto menu,
                                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new IllegalRequestDataException("Incorrect input data" + bindingResult);
