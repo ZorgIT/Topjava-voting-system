@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
@@ -33,18 +34,21 @@ public class RestaurantService {
         return restaurantRepository.save(restaurant);
     }
 
+    @Transactional(readOnly = true)
     public Restaurant findById(Long id) {
         return restaurantRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Restaurant with id:" +
                         id + " not found"));
     }
 
+    @Transactional(readOnly = true)
     public List<RestaurantDto> getAllAsTo() {
         return restaurantRepository.findAll().stream()
                 .map(RestaurantUtil::asTo)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<Restaurant> findAll() {
         return restaurantRepository.findAll();
     }
@@ -90,6 +94,4 @@ public class RestaurantService {
                 })
                 .collect(Collectors.toList());
     }
-
-
 }

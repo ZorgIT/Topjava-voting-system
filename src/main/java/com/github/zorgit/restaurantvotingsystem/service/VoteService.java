@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class VoteService {
     private final VoteRepository voteRepository;
     private final MenuRepository menuRepository;
@@ -54,11 +55,6 @@ public class VoteService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Vote> getVoteById(Long id) {
-        return voteRepository.findById(id);
-    }
-
-    @Transactional
     public void saveVote(UserVoteDto userVoteDto) {
         AuthUser authUser = AuthUser.get();
         LocalDateTime voteBoundaries = LocalDate.now().atTime(11, 0);
@@ -111,17 +107,6 @@ public class VoteService {
                         restaurant.getId() + " and date: " +
                         menuDate.toLocalDate());
             }
-        }
-    }
-
-    public void deleteVoteById(Long voteId) {
-        Optional<Vote> vote = voteRepository.findById(voteId);
-        if (vote.isPresent()) {
-            voteRepository.delete(vote.get());
-        } else {
-            throw new IllegalArgumentException("Vote with id" +
-                    voteId +
-                    " not found");
         }
     }
 
