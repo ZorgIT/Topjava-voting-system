@@ -81,11 +81,11 @@ public class RestaurantService {
         }
         final LocalDateTime menuDate = voteBoundaries;
         return restaurantRepository.findAll().stream()
-                .filter(restaurant -> !menuRepository.findByRestaurantIdAndDate(restaurant.getId(),
-                        menuDate.toLocalDate()).isEmpty())
+                .filter(restaurant -> !menuRepository.findByRestaurantIdAndAndDateTime(restaurant.getId(),
+                        menuDate).isEmpty())
                 .peek(restaurant -> {
-                    List<Menu> menus = menuRepository.findByRestaurantIdAndDate(restaurant.getId(),
-                            menuDate.toLocalDate());
+                    List<Menu> menus = menuRepository.findByRestaurantIdAndAndDateTime(restaurant.getId(),
+                            menuDate);
                     restaurant.setMenus(menus);
                 })
                 .collect(Collectors.toList());

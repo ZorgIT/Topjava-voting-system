@@ -81,8 +81,8 @@ public class VoteService {
                 return;
             }
             List<Menu> menuList =
-                    menuRepository.findByRestaurantIdAndDate(userVoteDto.getRestaurantId(),
-                            menuDate.toLocalDate());
+                    menuRepository.findByRestaurantIdAndAndDateTime(userVoteDto.getRestaurantId(),
+                            menuDate);
             if (!menuList.isEmpty()) {
                 Menu menuDay = menuList.get(0);
                 vote.setMenu(menuDay);
@@ -97,8 +97,8 @@ public class VoteService {
                     .orElseThrow(() -> new NotFoundException("Restaurant with id: "
                             + userVoteDto.getRestaurantId() + " not found"));
             List<Menu> menuList =
-                    menuRepository.findByRestaurantIdAndDate(restaurant.getId(),
-                            menuDate.toLocalDate());
+                    menuRepository.findByRestaurantIdAndAndDateTime(restaurant.getId(),
+                            menuDate);
             if (!menuList.isEmpty()) {
                 Menu menu = menuList.get(0);
                 Vote vote = new Vote();

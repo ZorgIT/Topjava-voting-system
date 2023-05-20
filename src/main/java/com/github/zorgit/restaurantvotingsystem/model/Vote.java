@@ -16,7 +16,7 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date_time_stamp", nullable = false)
     private LocalDateTime dateTime;
 
 

@@ -83,15 +83,15 @@ public class MenuService {
                 .orElseThrow(() -> new NotFoundException("Restaurant with id "
                         + restaurantId + " not found"));
 
-        Menu existingMenu = menuRepository.findByRestaurantAndDate(restaurant,
-                menuDate.toLocalDate());
+        Menu existingMenu = menuRepository.findByRestaurantAndDateTime(restaurant,
+                menuDate);
 
         Menu menu;
         if (existingMenu != null) {
             menu = existingMenu;
         } else {
             menu = new Menu();
-            menu.setDate(menuDate.toLocalDate());
+            menu.setDateTime(menuDate);
             menu.setRestaurant(restaurant);
         }
 
@@ -112,7 +112,7 @@ public class MenuService {
                     "belong to restaurant wit id " + restaurantId);
         }
 
-        menu.setDate(updatedMenu.getDate());
+        menu.setDateTime(updatedMenu.getDate());
         menu.setDish(updatedMenu.getDish());
         menu.setPrice(updatedMenu.getPrice());
 

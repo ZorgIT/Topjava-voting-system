@@ -21,7 +21,7 @@ public class Restaurant {
             orphanRemoval = true)
     //@JsonIgnoreProperties("menu")
     @JsonManagedReference
-    @OrderBy("date DESC")
+    @OrderBy("dateTime DESC")
     private List<Menu> menus;
 
     public Long getId() {

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -14,8 +15,8 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
+    @Column(name = "date_time_stamp", nullable = false)
+    private LocalDateTime dateTime;
     @Column(name = "dish", nullable = false)
     private String dish;
     @Column(name = "price", nullable = false)
@@ -30,9 +31,9 @@ public class Menu {
 
     }
 
-    public Menu(LocalDate date, String dish
+    public Menu(LocalDateTime dateTime, String dish
             , BigDecimal price, Restaurant restaurant) {
-        this.date = date;
+        this.dateTime = dateTime;
         this.dish = dish;
         this.price = price;
         this.restaurant = restaurant;
@@ -46,12 +47,12 @@ public class Menu {
         this.id = id;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDateTime(LocalDateTime date) {
+        this.dateTime = date;
     }
 
     public String getDish() {
@@ -82,7 +83,7 @@ public class Menu {
     public String toString() {
         return "Menu{" +
                 "id=" + id +
-                ", date=" + date +
+                ", date=" + dateTime +
                 ", dish='" + dish + '\'' +
                 ", price=" + price +
                 '}';

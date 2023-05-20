@@ -5,14 +5,16 @@ import org.springframework.stereotype.Repository;
 import com.github.zorgit.restaurantvotingsystem.model.Menu;
 import com.github.zorgit.restaurantvotingsystem.model.Restaurant;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
-    List<Menu> findByRestaurantIdAndDate(Long restaurantId, LocalDate date);
+    List<Menu> findByRestaurantIdAndAndDateTime(Long restaurantId,
+                                                LocalDateTime dateTime);
 
-    Menu findByRestaurantAndDate(Restaurant restaurant, LocalDate date);
+    Menu findByRestaurantAndDateTime(Restaurant restaurant,
+                                     LocalDateTime dateTime);
 
 
 }
