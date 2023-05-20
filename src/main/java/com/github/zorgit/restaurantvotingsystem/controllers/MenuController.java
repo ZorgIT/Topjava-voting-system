@@ -1,6 +1,6 @@
 package com.github.zorgit.restaurantvotingsystem.controllers;
 
-import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithDaymenuDto;
+import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithDayMenuDto;
 import com.github.zorgit.restaurantvotingsystem.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class MenuController {
 
     @GetMapping("/day-menus")
     @ResponseStatus(HttpStatus.OK)
-    public List<RestaurantWithDaymenuDto> getDayMenu() {
+    public List<RestaurantWithDayMenuDto> getDayMenu() {
         return restaurantService.getDayMenu();
     }
 }

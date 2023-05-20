@@ -1,7 +1,6 @@
 package com.github.zorgit.restaurantvotingsystem.util;
 
 import com.github.zorgit.restaurantvotingsystem.dto.RestaurantDto;
-import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithDaymenuDto;
 import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithIdDto;
 import com.github.zorgit.restaurantvotingsystem.model.Restaurant;
 import lombok.experimental.UtilityClass;
@@ -13,12 +12,6 @@ import java.util.stream.Collectors;
 public class RestaurantUtil {
     public Restaurant createNewFromTo(RestaurantDto restaurantDto) {
         Restaurant restaurant = new Restaurant();
-        restaurant.setName(restaurantDto.getName());
-        return restaurant;
-    }
-
-    public Restaurant updateFromTo(Restaurant restaurant,
-                                   RestaurantDto restaurantDto) {
         restaurant.setName(restaurantDto.getName());
         return restaurant;
     }
@@ -36,13 +29,5 @@ public class RestaurantUtil {
         return restaurants.stream()
                 .map(r -> new RestaurantWithIdDto(r.getId(), r.getName()))
                 .collect(Collectors.toList());
-    }
-
-    public RestaurantWithDaymenuDto asToWithMenu(Restaurant restaurant) {
-        return new RestaurantWithDaymenuDto(
-                restaurant.getId(),
-                restaurant.getName(),
-                MenusUtil.asMenuDtos(restaurant.getMenus())
-        );
     }
 }

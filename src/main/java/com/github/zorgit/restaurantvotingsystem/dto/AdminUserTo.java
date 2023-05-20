@@ -1,13 +1,13 @@
 package com.github.zorgit.restaurantvotingsystem.dto;
 
+import com.github.zorgit.restaurantvotingsystem.HasIdAndEmail;
+import com.github.zorgit.restaurantvotingsystem.model.Role;
+import com.github.zorgit.restaurantvotingsystem.util.validation.NoHtml;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import com.github.zorgit.restaurantvotingsystem.HasIdAndEmail;
-import com.github.zorgit.restaurantvotingsystem.model.Role;
-import com.github.zorgit.restaurantvotingsystem.util.validation.NoHtml;
 
 import java.util.Date;
 import java.util.Set;

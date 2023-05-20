@@ -2,20 +2,16 @@ package com.github.zorgit.restaurantvotingsystem.service;
 
 import com.github.zorgit.restaurantvotingsystem.dto.MenuDto;
 import com.github.zorgit.restaurantvotingsystem.dto.RestaurantDto;
-import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithDaymenuDto;
+import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithDayMenuDto;
 import com.github.zorgit.restaurantvotingsystem.error.NotFoundException;
-import com.github.zorgit.restaurantvotingsystem.model.Menu;
 import com.github.zorgit.restaurantvotingsystem.model.Restaurant;
-import com.github.zorgit.restaurantvotingsystem.repository.MenuRepository;
 import com.github.zorgit.restaurantvotingsystem.repository.RestaurantRepository;
-import com.github.zorgit.restaurantvotingsystem.util.MenusUtil;
 import com.github.zorgit.restaurantvotingsystem.util.RestaurantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -26,12 +22,10 @@ import java.util.stream.Collectors;
 public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
-    private final MenuRepository menuRepository;
 
     @Autowired
-    public RestaurantService(RestaurantRepository restaurantRepository, MenuRepository menuRepository) {
+    public RestaurantService(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
-        this.menuRepository = menuRepository;
     }
 
     public Restaurant create(Restaurant restaurant) {
@@ -68,7 +62,7 @@ public class RestaurantService {
     }
 
     @Transactional(readOnly = true)
-    public List<RestaurantWithDaymenuDto> getDayMenu() {
+    public List<RestaurantWithDayMenuDto> getDayMenu() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime voteBoundaries = LocalDate.now().atTime(11, 0);
         if (now.isBefore(voteBoundaries)) {
@@ -79,7 +73,7 @@ public class RestaurantService {
 
         List<Object[]> result = restaurantRepository.getDayMenu(startDateTime, endDateTime);
 
-        Map<Long, RestaurantWithDaymenuDto> restaurantsWithMenus = new HashMap<>();
+        Map<Long, RestaurantWithDayMenuDto> restaurantsWithMenus = new HashMap<>();
         for (Object[] row : result) {
             long restaurantId = (Long) row[0];
             String restaurantName = (String) row[1];
@@ -88,8 +82,8 @@ public class RestaurantService {
             BigDecimal price = (BigDecimal) row[4];
 
             if (!restaurantsWithMenus.containsKey(restaurantId)) {
-                RestaurantWithDaymenuDto restaurantDto =
-                        new RestaurantWithDaymenuDto(restaurantId, restaurantName, new ArrayList<>());
+                RestaurantWithDayMenuDto restaurantDto =
+                        new RestaurantWithDayMenuDto(restaurantId, restaurantName, new ArrayList<>());
                 restaurantsWithMenus.put(restaurantId, restaurantDto);
             }
 

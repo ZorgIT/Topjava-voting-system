@@ -3,10 +3,9 @@ package com.github.zorgit.restaurantvotingsystem.dto;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class MenuDto  {
+public class MenuDto {
     @NotNull
     @PastOrPresent
     private LocalDateTime date;
@@ -25,7 +24,8 @@ public class MenuDto  {
         this.dishName = dishName;
         this.price = price;
     }
-    public MenuDto(){
+
+    public MenuDto() {
 
     }
 
