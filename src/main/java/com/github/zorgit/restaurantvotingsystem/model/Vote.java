@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "votes")
-@ToString(exclude = {"user", "menu"})
+@ToString(exclude = {"user", "restaurant"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Vote {
@@ -34,10 +34,16 @@ public class Vote {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id", nullable = false)
+    @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     @Getter
     @Setter
-    private Menu menu;
+    private Restaurant restaurant;
+
+    public Vote(User user, Restaurant restaurant, LocalDateTime voteDeadline) {
+        this.user = user;
+        this.restaurant = restaurant;
+        this.dateTime = voteDeadline;
+    }
 }

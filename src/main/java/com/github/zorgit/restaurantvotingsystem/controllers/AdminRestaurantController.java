@@ -2,14 +2,20 @@ package com.github.zorgit.restaurantvotingsystem.controllers;
 
 import com.github.zorgit.restaurantvotingsystem.dto.RestaurantDto;
 import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithIdDto;
+import com.github.zorgit.restaurantvotingsystem.error.IllegalRequestDataException;
+import com.github.zorgit.restaurantvotingsystem.error.NotFoundException;
 import com.github.zorgit.restaurantvotingsystem.service.RestaurantService;
 import com.github.zorgit.restaurantvotingsystem.util.RestaurantUtil;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -25,25 +31,35 @@ public class AdminRestaurantController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestaurantWithIdDto> createRestaurant(@RequestBody RestaurantDto restaurant) {
-        RestaurantWithIdDto createdRestaurant = RestaurantUtil.asToWithId(restaurantService
-                .create(RestaurantUtil.createNewFromTo(restaurant)));
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdRestaurant);
+    public ResponseEntity<RestaurantWithIdDto> createRestaurant(@RequestBody @Valid RestaurantDto restaurant,
+                                                                BindingResult bindingResult,
+                                                                UriComponentsBuilder uriBuilder) {
+        if (bindingResult.hasErrors()) {
+            throw new IllegalRequestDataException("Incorrect input data" + bindingResult);
+        }
+
+        RestaurantWithIdDto createdRestaurant = RestaurantUtil.asToWithId(
+                restaurantService.create(RestaurantUtil.createNewFromTo(restaurant)));
+
+        URI locationUri = uriBuilder.path(REST_URL + "/{id}")
+                .buildAndExpand(createdRestaurant.getId()).toUri();
+
+        return ResponseEntity.created(locationUri).body(createdRestaurant);
     }
 
     @GetMapping()
-    public ResponseEntity<List<RestaurantWithIdDto>> getAllRestaurants() {
-        List<RestaurantWithIdDto> restaurants =
-                RestaurantUtil.asToListWithId(restaurantService.findAll());
-        return ResponseEntity.ok(restaurants);
+    public List<RestaurantWithIdDto> getAllRestaurants() {
+        return RestaurantUtil.asToListWithId(restaurantService.findAll());
     }
 
     @GetMapping("/{restaurantId}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<RestaurantDto> getRestaurantById(@PathVariable Long restaurantId) {
-        RestaurantDto restaurant = RestaurantUtil.asTo(restaurantService.findById(restaurantId));
-        if (restaurant != null) {
-            return ResponseEntity.ok(restaurant);
-        } else {
+        try {
+            return ResponseEntity.ok(
+                    RestaurantUtil.asTo(restaurantService.findById(restaurantId))
+            );
+        } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -59,8 +75,8 @@ public class AdminRestaurantController {
     }
 
     @DeleteMapping("/{restaurantId}")
-    public ResponseEntity<Void> deleteRestaurant(@PathVariable Long restaurantId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteRestaurant(@PathVariable Long restaurantId) {
         restaurantService.delete(restaurantId);
-        return ResponseEntity.noContent().build();
     }
 }

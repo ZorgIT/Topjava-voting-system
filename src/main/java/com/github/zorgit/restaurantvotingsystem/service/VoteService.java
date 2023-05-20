@@ -3,7 +3,6 @@ package com.github.zorgit.restaurantvotingsystem.service;
 import com.github.zorgit.restaurantvotingsystem.dto.UserVoteDto;
 import com.github.zorgit.restaurantvotingsystem.error.NotFoundException;
 import com.github.zorgit.restaurantvotingsystem.error.VoteChangeNotAllowedException;
-import com.github.zorgit.restaurantvotingsystem.model.Menu;
 import com.github.zorgit.restaurantvotingsystem.model.Restaurant;
 import com.github.zorgit.restaurantvotingsystem.model.Vote;
 import com.github.zorgit.restaurantvotingsystem.repository.MenuRepository;
@@ -51,63 +50,37 @@ public class VoteService {
             throw new NotFoundException("No votes found for user with id: " + userId);
         }
         return votes.stream()
-                .map(v -> new UserVoteDto(v.getMenu().getRestaurant().getId(), v.getDateTime()))
+                .map(v -> new UserVoteDto(v.getRestaurant().getId(), v.getDateTime()))
                 .collect(Collectors.toList());
     }
 
-    public void saveVote(UserVoteDto userVoteDto) {
+    public UserVoteDto saveVote(UserVoteDto userVoteDto) {
         AuthUser authUser = AuthUser.get();
-        LocalDateTime voteBoundaries = LocalDate.now().atTime(11, 0);
-        if (LocalDateTime.now().isAfter(voteBoundaries)) {
-            voteBoundaries = voteBoundaries.plusDays(1);
-        }
-        final LocalDateTime menuDate = voteBoundaries;
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime voteDeadline = LocalDate.now().atTime(11, 0);
 
-        Optional<Vote> voteOptional =
-                voteRepository.findByUserIdAndDateTime(authUser.id(),
-                        menuDate);
-        if (voteOptional.isPresent()) {
-            Vote vote = voteOptional.get();
-            if (LocalDateTime.now().isAfter(voteBoundaries)) {
-                throw new VoteChangeNotAllowedException();
-            }
-            Menu menu = vote.getMenu();
-            Restaurant restaurant = menu.getRestaurant();
-            if (restaurant.getId().equals(userVoteDto.getRestaurantId())) {
-                return;
-            }
-            List<Menu> menuList =
-                    menuRepository.findByRestaurantIdAndAndDateTime(userVoteDto.getRestaurantId(),
-                            menuDate);
-            if (!menuList.isEmpty()) {
-                Menu menuDay = menuList.get(0);
-                vote.setMenu(menuDay);
-                voteRepository.save(vote);
-            } else {
-                throw new NotFoundException("Menu not found for restaurant with id: " +
-                        userVoteDto.getRestaurantId() + " and date: " +
-                        menuDate.toLocalDate());
-            }
-        } else {
-            Restaurant restaurant = restaurantRepository.findById(userVoteDto.getRestaurantId())
-                    .orElseThrow(() -> new NotFoundException("Restaurant with id: "
-                            + userVoteDto.getRestaurantId() + " not found"));
-            List<Menu> menuList =
-                    menuRepository.findByRestaurantIdAndAndDateTime(restaurant.getId(),
-                            menuDate);
-            if (!menuList.isEmpty()) {
-                Menu menu = menuList.get(0);
-                Vote vote = new Vote();
-                vote.setUser(authUser.getUser());
-                vote.setDateTime(menuDate);
-                vote.setMenu(menu);
-                voteRepository.save(vote);
-            } else {
-                throw new NotFoundException("Menu not found for restaurant with id: " +
-                        restaurant.getId() + " and date: " +
-                        menuDate.toLocalDate());
-            }
+        if (now.isAfter(voteDeadline)) {
+            voteDeadline = voteDeadline.plusDays(1);
         }
+
+        Optional<Vote> existingVote =
+                voteRepository.findByUserIdAndDateTime(authUser.id(), voteDeadline);
+
+        if (existingVote.isPresent() && now.isAfter(voteDeadline)) {
+            throw new VoteChangeNotAllowedException();
+        }
+
+        Restaurant restaurant = restaurantRepository.findById(userVoteDto.getRestaurantId())
+                .orElseThrow(() -> new NotFoundException(userVoteDto.getRestaurantId().toString()));
+
+        if (existingVote.isPresent()) {
+            existingVote.get().setRestaurant(restaurant);
+            voteRepository.save(existingVote.get());
+        } else {
+            Vote newVote = new Vote(authUser.getUser(), restaurant, voteDeadline);
+            voteRepository.save(newVote);
+        }
+        return new UserVoteDto(userVoteDto.getRestaurantId(), voteDeadline);
     }
 
     @Transactional(readOnly = true)

@@ -5,9 +5,11 @@ import com.github.zorgit.restaurantvotingsystem.service.VoteService;
 import com.github.zorgit.restaurantvotingsystem.util.user.AuthUser;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,23 +25,23 @@ public class VoteController {
 
     @PostMapping
     public ResponseEntity<UserVoteDto> saveVote(@RequestBody @Valid UserVoteDto userVoteDto) {
-        voteService.saveVote(userVoteDto);
-        return ResponseEntity.ok(userVoteDto);
+        UserVoteDto savedVoteDto = voteService.saveVote(userVoteDto);
+        URI locationUri = URI.create("/api/votes/" + savedVoteDto.getId());
+        return ResponseEntity.created(locationUri).body(savedVoteDto);
     }
 
     @GetMapping()
-    public ResponseEntity<List<UserVoteDto>> getAllUserVote() {
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserVoteDto> getAllUserVote() {
         AuthUser authUser = AuthUser.get();
-        List<UserVoteDto> userVoteDtos = voteService.getAllByUserId(authUser.id());
-        return ResponseEntity.ok(userVoteDtos);
+        return voteService.getAllByUserId(authUser.id());
     }
 
     @GetMapping("/last-vote")
-    public ResponseEntity<Optional<UserVoteDto>> getLastUserVote() {
+    @ResponseStatus(HttpStatus.OK)
+    public Optional<UserVoteDto> getLastUserVote() {
         AuthUser authUser = AuthUser.get();
-        Optional<UserVoteDto> voteDto =
-                voteService.getMostRecentUserVote(authUser.id());
-        return ResponseEntity.ok(voteDto);
+        return voteService.getMostRecentUserVote(authUser.id());
     }
 
 }

@@ -83,7 +83,8 @@ public class RestaurantService {
 
     private Restaurant getRestaurantById(Long id) {
         return restaurantRepository
-                .findById(id).orElseThrow(() ->
+                .findById(id)
+                .orElseThrow(() ->
                         new NotFoundException("Restaurant with " +
                                 "id: " +
                                 id + " not found"));

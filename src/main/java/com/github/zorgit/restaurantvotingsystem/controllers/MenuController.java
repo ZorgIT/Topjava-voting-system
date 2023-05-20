@@ -4,9 +4,10 @@ import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithDaymenuDto;
 import com.github.zorgit.restaurantvotingsystem.service.RestaurantService;
 import com.github.zorgit.restaurantvotingsystem.util.RestaurantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,11 +24,10 @@ public class MenuController {
     }
 
     @GetMapping("/day-menus")
-    public ResponseEntity<List<RestaurantWithDaymenuDto>> getRestaurantsWithMenus() {
-        return ResponseEntity.ok(
-                RestaurantService.getRestaurantsWithMenus().stream()
-                        .map(RestaurantUtil::asToWithMenu)
-                        .collect(Collectors.toList())
-        );
+    @ResponseStatus(HttpStatus.OK)
+    public List<RestaurantWithDaymenuDto> getRestaurantsWithMenus() {
+        return RestaurantService.getRestaurantsWithMenus().stream()
+                .map(RestaurantUtil::asToWithMenu)
+                .collect(Collectors.toList());
     }
 }

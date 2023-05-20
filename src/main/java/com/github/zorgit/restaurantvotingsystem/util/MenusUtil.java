@@ -1,8 +1,8 @@
 package com.github.zorgit.restaurantvotingsystem.util;
 
-import lombok.experimental.UtilityClass;
 import com.github.zorgit.restaurantvotingsystem.dto.MenuWithoutDateDto;
 import com.github.zorgit.restaurantvotingsystem.model.Menu;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class MenusUtil {
@@ -14,8 +14,6 @@ public class MenusUtil {
         );
 
     }
-
-
 
 
 }

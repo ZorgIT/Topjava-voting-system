@@ -21,7 +21,7 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
     Optional<Vote> findById(Long id);
 
     @Query("SELECT v FROM Vote v " +
-            "JOIN FETCH v.menu m " +
+            "JOIN FETCH v.restaurant m " +
             "WHERE v.user.id = :userId " +
             "AND v.dateTime = (SELECT MAX(v2.dateTime) FROM Vote v2 WHERE v2.user.id = :userId)")
     Optional<Vote> findFirstByUserId(@Param("userId") Integer userId);

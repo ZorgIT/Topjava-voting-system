@@ -7,11 +7,14 @@ import com.github.zorgit.restaurantvotingsystem.model.Menu;
 import com.github.zorgit.restaurantvotingsystem.service.MenuService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,12 +32,17 @@ public class AdminMenuController {
     @PostMapping("/{restaurantId}/menus")
     public ResponseEntity<Menu> createMenu(@PathVariable Long restaurantId,
                                            @Valid @RequestBody MenuDto menu,
-                                           BindingResult bindingResult) {
+                                           BindingResult bindingResult,
+                                           UriComponentsBuilder uriBuilder) {
         if (bindingResult.hasErrors()) {
             throw new IllegalRequestDataException("Incorrect input data" + bindingResult);
         }
         Menu createdMenu = menuService.create(restaurantId, menu);
-        return ResponseEntity.ok(createdMenu);
+        URI locationUri = uriBuilder.path(REST_URL +
+                        "/{restaurantId}/menus/{id}")
+                .buildAndExpand(restaurantId, createdMenu.getId())
+                .toUri();
+        return ResponseEntity.created(locationUri).body(createdMenu);
     }
 
     @GetMapping("/{restaurantId}/menus")
@@ -44,10 +52,10 @@ public class AdminMenuController {
     }
 
     @GetMapping("/{restaurantId}/menus/{menuId}")
-    public ResponseEntity<Menu> getMenu(@PathVariable Long restaurantId,
-                                        @PathVariable Long menuId) {
-        Menu menu = menuService.getOneByIdAndRestaurantId(menuId, restaurantId);
-        return ResponseEntity.ok(menu);
+    @ResponseStatus(HttpStatus.OK)
+    public Menu getMenu(@PathVariable Long restaurantId,
+                        @PathVariable Long menuId) {
+        return menuService.getOneByIdAndRestaurantId(menuId, restaurantId);
     }
 
     @PutMapping("/{restaurantId}/menus/{menuId}")
@@ -59,8 +67,9 @@ public class AdminMenuController {
     }
 
     @DeleteMapping("/{restaurantId}/menus/{menuId}")
-    public ResponseEntity<Void> deleteMenu(@PathVariable Long restaurantId, @PathVariable Long menuId) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMenu(@PathVariable Long restaurantId,
+                           @PathVariable Long menuId) {
         menuService.delete(restaurantId, menuId);
-        return ResponseEntity.noContent().build();
     }
 }

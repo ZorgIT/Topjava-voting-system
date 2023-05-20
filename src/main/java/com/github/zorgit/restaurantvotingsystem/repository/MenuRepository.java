@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
@@ -17,4 +18,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 
     Menu findByRestaurantAndDateTime(Restaurant restaurant,
                                      LocalDateTime dateTime);
+
+    Optional<Menu> findByRestaurantIdAndDateTime(Long id,
+                                                 LocalDateTime voteDeadline);
 }

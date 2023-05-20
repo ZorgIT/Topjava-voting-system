@@ -19,4 +19,7 @@ public class UserVoteDto {
         return dateTime;
     }
 
+    public Long getId() {
+        return restaurantId;
+    }
 }

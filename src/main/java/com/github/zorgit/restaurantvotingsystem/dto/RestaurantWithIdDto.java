@@ -8,4 +8,7 @@ public class RestaurantWithIdDto extends AbstractRestaurantDto {
         this.id = id;
     }
 
+    public Long getId() {
+        return id;
+    }
 }
