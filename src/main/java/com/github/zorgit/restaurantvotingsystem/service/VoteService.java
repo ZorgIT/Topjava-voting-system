@@ -1,22 +1,24 @@
 package com.github.zorgit.restaurantvotingsystem.service;
 
-import com.github.zorgit.restaurantvotingsystem.repository.MenuRepository;
-import com.github.zorgit.restaurantvotingsystem.repository.RestaurantRepository;
-import com.github.zorgit.restaurantvotingsystem.repository.VoteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import com.github.zorgit.restaurantvotingsystem.dto.VoteDto;
+import com.github.zorgit.restaurantvotingsystem.dto.UserVoteDto;
 import com.github.zorgit.restaurantvotingsystem.error.NotFoundException;
 import com.github.zorgit.restaurantvotingsystem.error.VoteChangeNotAllowedException;
 import com.github.zorgit.restaurantvotingsystem.model.Menu;
 import com.github.zorgit.restaurantvotingsystem.model.Restaurant;
 import com.github.zorgit.restaurantvotingsystem.model.Vote;
+import com.github.zorgit.restaurantvotingsystem.repository.MenuRepository;
+import com.github.zorgit.restaurantvotingsystem.repository.RestaurantRepository;
+import com.github.zorgit.restaurantvotingsystem.repository.VoteRepository;
+import com.github.zorgit.restaurantvotingsystem.util.VoteUtil;
 import com.github.zorgit.restaurantvotingsystem.util.user.AuthUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,12 +43,23 @@ public class VoteService {
         return voteRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
+    public List<UserVoteDto> getAllByUserId(Integer userId) {
+        List<Vote> votes = voteRepository.findByUserId(userId).orElse(Collections.emptyList());
+        if (votes.isEmpty()) {
+            throw new NotFoundException("No votes found for user with id: " + userId);
+        }
+        return votes.stream()
+                .map(v -> new UserVoteDto(v.getMenu().getRestaurant().getId(), v.getDateTime()))
+                .collect(Collectors.toList());
+    }
+
     public Optional<Vote> getVoteById(Long id) {
         return voteRepository.findById(id);
     }
 
     @Transactional
-    public void saveVote(VoteDto voteDto) {
+    public void saveVote(UserVoteDto userVoteDto) {
         AuthUser authUser = AuthUser.get();
         LocalDateTime voteBoundaries = LocalDate.now().atTime(11, 0);
         if (LocalDateTime.now().isAfter(voteBoundaries)) {
@@ -55,8 +68,8 @@ public class VoteService {
         final LocalDateTime menuDate = voteBoundaries;
 
         Optional<Vote> voteOptional =
-                voteRepository.findByUserIdAndDate(authUser.id(),
-                        menuDate.toLocalDate());
+                voteRepository.findByUserIdAndDateTime(authUser.id(),
+                        menuDate);
         if (voteOptional.isPresent()) {
             Vote vote = voteOptional.get();
             if (LocalDateTime.now().isAfter(voteBoundaries)) {
@@ -64,11 +77,11 @@ public class VoteService {
             }
             Menu menu = vote.getMenu();
             Restaurant restaurant = menu.getRestaurant();
-            if (restaurant.getId().equals(voteDto.getRestaurantId())) {
+            if (restaurant.getId().equals(userVoteDto.getRestaurantId())) {
                 return;
             }
             List<Menu> menuList =
-                    menuRepository.findByRestaurantIdAndDate(voteDto.getRestaurantId(),
+                    menuRepository.findByRestaurantIdAndDate(userVoteDto.getRestaurantId(),
                             menuDate.toLocalDate());
             if (!menuList.isEmpty()) {
                 Menu menuDay = menuList.get(0);
@@ -76,13 +89,13 @@ public class VoteService {
                 voteRepository.save(vote);
             } else {
                 throw new NotFoundException("Menu not found for restaurant with id: " +
-                        voteDto.getRestaurantId() + " and date: " +
+                        userVoteDto.getRestaurantId() + " and date: " +
                         menuDate.toLocalDate());
             }
         } else {
-            Restaurant restaurant = restaurantRepository.findById(voteDto.getRestaurantId())
+            Restaurant restaurant = restaurantRepository.findById(userVoteDto.getRestaurantId())
                     .orElseThrow(() -> new NotFoundException("Restaurant with id: "
-                            + voteDto.getRestaurantId() + " not found"));
+                            + userVoteDto.getRestaurantId() + " not found"));
             List<Menu> menuList =
                     menuRepository.findByRestaurantIdAndDate(restaurant.getId(),
                             menuDate.toLocalDate());
@@ -90,7 +103,7 @@ public class VoteService {
                 Menu menu = menuList.get(0);
                 Vote vote = new Vote();
                 vote.setUser(authUser.getUser());
-                vote.setDate(menuDate.toLocalDate());
+                vote.setDate(menuDate);
                 vote.setMenu(menu);
                 voteRepository.save(vote);
             } else {
@@ -101,8 +114,6 @@ public class VoteService {
         }
     }
 
-
-
     public void deleteVoteById(Long voteId) {
         Optional<Vote> vote = voteRepository.findById(voteId);
         if (vote.isPresent()) {
@@ -112,5 +123,11 @@ public class VoteService {
                     voteId +
                     " not found");
         }
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<UserVoteDto> getMostRecentUserVote(Integer userId) {
+        Optional<Vote> vote = voteRepository.findFirstByUserId(userId);
+        return VoteUtil.asToOptional(vote);
     }
 }

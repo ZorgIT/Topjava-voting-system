@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "votes")
@@ -17,7 +18,7 @@ public class Vote {
     private Long id;
 
     @Column(name = "date", nullable = false)
-    private LocalDate date;
+    private LocalDateTime dateTime;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,8 +38,8 @@ public class Vote {
 
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDate(LocalDateTime date) {
+        this.dateTime = date;
     }
 
     public void setUser(User user) {
@@ -61,11 +62,20 @@ public class Vote {
         this.id = id;
     }
 
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+
     @Override
     public String toString() {
         return "Vote{" +
                 "id=" + id +
-                ", date=" + date +
+                ", date=" + dateTime +
                 ", user=" + user +
                 ", menu=" + menu +
                 '}';
