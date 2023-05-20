@@ -44,8 +44,8 @@ public class RestExceptionHandler {
     private final MessageSource messageSource;
 
     //    https://stackoverflow.com/a/52254601/548473
-    static final Map<Class<? extends Throwable>
-            , ErrorType> HTTP_STATUS_MAP = new LinkedHashMap<>() {
+    static final Map<Class<? extends Throwable>,
+            ErrorType> HTTP_STATUS_MAP = new LinkedHashMap<>() {
         {
 // more specific first
             put(NotFoundException.class, NOT_FOUND);
@@ -68,9 +68,11 @@ public class RestExceptionHandler {
     };
 
     @ExceptionHandler(BindException.class)
-    public ProblemDetail bindException(BindException ex,
-                                       HttpServletRequest request) {
-        return processException(ex, request, Map.of("invalid_params",
+    public ProblemDetail bindException(
+            BindException ex,
+            HttpServletRequest request) {
+        return processException(ex, request, Map.of(
+                "invalid_params",
                 getErrorMap(ex.getBindingResult())));
     }
 
@@ -80,35 +82,48 @@ public class RestExceptionHandler {
         return processException(ex, request, Map.of());
     }
 
-    protected ProblemDetail processException(@NonNull Exception ex,
-                                             HttpServletRequest request,
-                                             Map<String, Object> additionalParams) {
+    protected ProblemDetail processException(
+            @NonNull Exception ex,
+            HttpServletRequest request,
+            Map<String, Object> additionalParams) {
         String path = request.getRequestURI();
         Class<? extends Exception> exClass = ex.getClass();
-        Optional<ErrorType> optType = HTTP_STATUS_MAP.entrySet().stream()
+        Optional<ErrorType> optType = HTTP_STATUS_MAP
+                .entrySet()
+                .stream()
                 .filter(
-                        entry -> entry.getKey().isAssignableFrom(exClass)
-                )
-                .findAny().map(Map.Entry::getValue);
+                        entry -> entry
+                                .getKey()
+                                .isAssignableFrom(exClass))
+                .findAny()
+                .map(Map.Entry::getValue);
         if (optType.isPresent()) {
             log.error(ERR_PFX + "Exception {} at request {}", ex, path);
-            return createProblemDetail(ex, optType.get()
-                    , ex.getMessage(), additionalParams);
+            return createProblemDetail(
+                    ex,
+                    optType.get(),
+                    ex.getMessage(),
+                    additionalParams);
         } else {
             Throwable root = getRootCause(ex);
             log.error(ERR_PFX + "Exception " + root + " at request " + path, root);
-            return createProblemDetail(ex, APP_ERROR
-                    , "Exception " + root.getClass()
-                            .getSimpleName(), additionalParams);
+            return createProblemDetail(
+                    ex,
+                    APP_ERROR,
+                    "Exception " + root.getClass().getSimpleName(),
+                    additionalParams);
         }
     }
 
-    private ProblemDetail createProblemDetail(Exception ex,
-                                              ErrorType type,
-                                              String defaultDetail,
-                                              @NonNull Map<String, Object> additionalParams) {
-        ErrorResponse.Builder builder = ErrorResponse.builder(ex
-                , type.status, defaultDetail);
+    private ProblemDetail createProblemDetail(
+            Exception ex,
+            ErrorType type,
+            String defaultDetail,
+            @NonNull Map<String, Object> additionalParams) {
+        ErrorResponse.Builder builder = ErrorResponse.builder(
+                ex,
+                type.status,
+                defaultDetail);
         ProblemDetail pd = builder.build().updateAndGetBody(messageSource,
                 LocaleContextHolder.getLocale());
         additionalParams.forEach(pd::setProperty);
@@ -128,7 +143,8 @@ public class RestExceptionHandler {
     }
 
     public String getErrorMessage(ObjectError error) {
-        return messageSource.getMessage(error.getCode(),
+        return messageSource.getMessage(
+                error.getCode(),
                 error.getArguments(),
                 error.getDefaultMessage(),
                 LocaleContextHolder.getLocale());
