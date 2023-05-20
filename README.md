@@ -55,6 +55,7 @@ ROLE_ADMIN or ROLE_USER).
 
 ### 4. If a user votes again on the same day after 11:00, the vote cannot be
 
+
 ### changed:
 
 - The application checks the time when the user submits a new vote request.
