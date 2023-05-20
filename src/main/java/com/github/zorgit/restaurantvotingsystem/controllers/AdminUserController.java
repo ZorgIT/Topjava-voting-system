@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = AdminUserController.REST_URL,
         produces = MediaType.APPLICATION_JSON_VALUE)
-// TODO: cache only most requested, seldom changed data!
 public class AdminUserController extends AbstractUserController {
 
     static final String REST_URL = "/api/admin/users";
@@ -62,10 +61,10 @@ public class AdminUserController extends AbstractUserController {
 
     @PutMapping(value = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody User user, @PathVariable int userId) {
+    public void update(@Valid @RequestBody UserTo user, @PathVariable int userId) {
         log.info("update {} with id={}", user, userId);
         ValidationUtil.assureIdConsistent(user, userId);
-        repository.prepareAndSave(user);
+        repository.prepareAndSave(UsersUtil.createNewFromTo(user));
     }
 
     @GetMapping("/by-email")
