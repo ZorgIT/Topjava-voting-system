@@ -5,7 +5,6 @@ import com.github.zorgit.restaurantvotingsystem.error.NotFoundException;
 import com.github.zorgit.restaurantvotingsystem.error.VoteChangeNotAllowedException;
 import com.github.zorgit.restaurantvotingsystem.model.Restaurant;
 import com.github.zorgit.restaurantvotingsystem.model.Vote;
-import com.github.zorgit.restaurantvotingsystem.repository.MenuRepository;
 import com.github.zorgit.restaurantvotingsystem.repository.RestaurantRepository;
 import com.github.zorgit.restaurantvotingsystem.repository.VoteRepository;
 import com.github.zorgit.restaurantvotingsystem.util.VoteUtil;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -26,21 +24,14 @@ import java.util.stream.Collectors;
 @Transactional
 public class VoteService {
     private final VoteRepository voteRepository;
-    private final MenuRepository menuRepository;
     private final RestaurantRepository restaurantRepository;
 
     @Autowired
 
     public VoteService(VoteRepository voteRepository,
-                       MenuRepository menuRepository,
                        RestaurantRepository restaurantRepository) {
         this.voteRepository = voteRepository;
-        this.menuRepository = menuRepository;
         this.restaurantRepository = restaurantRepository;
-    }
-
-    public Collection<Vote> getAllVotes() {
-        return voteRepository.findAll();
     }
 
     @Transactional(readOnly = true)

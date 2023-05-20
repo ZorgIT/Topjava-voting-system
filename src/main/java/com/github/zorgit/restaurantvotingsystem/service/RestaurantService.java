@@ -1,5 +1,6 @@
 package com.github.zorgit.restaurantvotingsystem.service;
 
+import com.github.zorgit.restaurantvotingsystem.dto.MenuDto;
 import com.github.zorgit.restaurantvotingsystem.dto.RestaurantDto;
 import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithDaymenuDto;
 import com.github.zorgit.restaurantvotingsystem.error.NotFoundException;
@@ -13,11 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,27 +77,28 @@ public class RestaurantService {
         final LocalDateTime startDateTime = voteBoundaries;
         final LocalDateTime endDateTime = startDateTime.plusDays(1).minusSeconds(1);
 
-        List<Menu> allMenus = menuRepository.findByDateTimeBetween(startDateTime, endDateTime);
+        List<Object[]> result = restaurantRepository.getDayMenu(startDateTime, endDateTime);
 
-        Map<Restaurant, List<Menu>> menusByRestaurant =
-                allMenus.stream()
-                        .collect(Collectors.groupingBy(Menu::getRestaurant));
+        Map<Long, RestaurantWithDaymenuDto> restaurantsWithMenus = new HashMap<>();
+        for (Object[] row : result) {
+            long restaurantId = (Long) row[0];
+            String restaurantName = (String) row[1];
+            LocalDateTime dateTime = (LocalDateTime) row[2];
+            String dishName = (String) row[3];
+            BigDecimal price = (BigDecimal) row[4];
 
-        return restaurantRepository.findAll().stream()
-                .map(restaurant -> {
-                    RestaurantWithDaymenuDto restaurantDto =
-                            new RestaurantWithDaymenuDto(restaurant.getId(),
-                                    restaurant.getName(), null);
+            if (!restaurantsWithMenus.containsKey(restaurantId)) {
+                RestaurantWithDaymenuDto restaurantDto =
+                        new RestaurantWithDaymenuDto(restaurantId, restaurantName, new ArrayList<>());
+                restaurantsWithMenus.put(restaurantId, restaurantDto);
+            }
 
-                    List<Menu> menus = menusByRestaurant.get(restaurant);
+            if (dishName != null && price != null) {
+                restaurantsWithMenus.get(restaurantId).getMenuDtos().add(new MenuDto(startDateTime, dishName, price));
+            }
+        }
 
-                    if (menus != null) {
-                        restaurantDto.setMenuDtos(MenusUtil.asMenuDtos(menus));
-                    }
-                    return restaurantDto;
-                })
-                .filter(restaurantDto -> restaurantDto.getMenuDtos() != null)
-                .collect(Collectors.toList());
+        return new ArrayList<>(restaurantsWithMenus.values());
     }
 
     private Restaurant getRestaurantById(Long id) {
