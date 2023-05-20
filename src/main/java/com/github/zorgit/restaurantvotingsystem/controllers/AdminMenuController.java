@@ -2,7 +2,6 @@ package com.github.zorgit.restaurantvotingsystem.controllers;
 
 
 import com.github.zorgit.restaurantvotingsystem.dto.MenuDto;
-import com.github.zorgit.restaurantvotingsystem.dto.MenuWithoutDateDto;
 import com.github.zorgit.restaurantvotingsystem.error.IllegalRequestDataException;
 import com.github.zorgit.restaurantvotingsystem.model.Menu;
 import com.github.zorgit.restaurantvotingsystem.service.MenuService;
@@ -34,7 +33,7 @@ public class AdminMenuController {
         if (bindingResult.hasErrors()) {
             throw new IllegalRequestDataException("Incorrect input data" + bindingResult);
         }
-        Menu createdMenu = menuService.saveOrUpdate(restaurantId, menu);
+        Menu createdMenu = menuService.create(restaurantId, menu);
         return ResponseEntity.ok(createdMenu);
     }
 

@@ -70,7 +70,7 @@ public class MenuService {
         }
     }
 
-    public Menu saveOrUpdate(Long restaurantId, MenuDto menuDto) {
+    public Menu create(Long restaurantId, MenuDto menuDto) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new NotFoundException("Restaurant with id "
                         + restaurantId + " not found"));
