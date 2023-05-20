@@ -5,4 +5,6 @@ public class RestaurantDto extends AbstractRestaurantDto {
         super(name);
     }
 
+    public RestaurantDto() {}; //needed to JSON
+
 }

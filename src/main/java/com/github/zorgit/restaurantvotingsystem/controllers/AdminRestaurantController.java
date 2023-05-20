@@ -1,15 +1,14 @@
 package com.github.zorgit.restaurantvotingsystem.controllers;
 
+import com.github.zorgit.restaurantvotingsystem.dto.RestaurantDto;
+import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithIdDto;
+import com.github.zorgit.restaurantvotingsystem.service.RestaurantService;
 import com.github.zorgit.restaurantvotingsystem.util.RestaurantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.github.zorgit.restaurantvotingsystem.dto.RestaurantDto;
-import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithIdDto;
-import com.github.zorgit.restaurantvotingsystem.model.Restaurant;
-import com.github.zorgit.restaurantvotingsystem.service.RestaurantService;
 
 import java.util.List;
 
@@ -53,14 +52,10 @@ public class AdminRestaurantController {
     public ResponseEntity<RestaurantWithIdDto> updateRestaurant(
             @PathVariable Long restaurantId,
             @RequestBody RestaurantDto updatedRestaurant) {
-        Restaurant restaurant = restaurantService.findById(restaurantId);
-        if (restaurant != null) {
-            RestaurantUtil.updateFromTo(restaurant, updatedRestaurant);
-            restaurantService.update(restaurant);
-            return ResponseEntity.ok(RestaurantUtil.asToWithId(restaurant));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity
+                .ok(RestaurantUtil
+                        .asToWithId(restaurantService
+                                .updateById(restaurantId, updatedRestaurant)));
     }
 
     @DeleteMapping("/{restaurantId}")

@@ -12,6 +12,10 @@ public class AbstractRestaurantDto {
         this.name = name;
     }
 
+    public AbstractRestaurantDto() {
+
+    }
+
     public String getName() {
         return name;
     }

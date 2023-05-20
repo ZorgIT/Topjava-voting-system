@@ -36,9 +36,7 @@ public class RestaurantService {
 
     @Transactional(readOnly = true)
     public Restaurant findById(Long id) {
-        return restaurantRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Restaurant with id:" +
-                        id + " not found"));
+        return getRestaurantById(id);
     }
 
     @Transactional(readOnly = true)
@@ -53,28 +51,16 @@ public class RestaurantService {
         return restaurantRepository.findAll();
     }
 
-    public Restaurant update(Restaurant updatedRestaurant) {
-        Optional<Restaurant> restaurant =
-                restaurantRepository.findById(updatedRestaurant.getId());
-        if (restaurant.isPresent()) {
-            Restaurant existingRestaurant = restaurant.get();
-            existingRestaurant.setName(updatedRestaurant.getName());
-            existingRestaurant.setMenus(updatedRestaurant.getMenus());
-            return restaurantRepository.save(existingRestaurant);
-        } else {
-            throw new IllegalArgumentException("Restaurant not found");
-        }
+    public Restaurant updateById(Long id, RestaurantDto updatedRestaurant) {
+        Restaurant restaurant = getRestaurantById(id);
+        restaurant.setName(updatedRestaurant.getName());
+        return restaurantRepository.save(restaurant);
     }
 
     public void delete(Long restaurantId) {
         Optional<Restaurant> restaurant =
-                restaurantRepository.findById(restaurantId);
-        if (restaurant.isPresent()) {
-            restaurantRepository.delete(restaurant.get());
-        } else {
-            throw new IllegalArgumentException("Restaurant with id"
-                    + restaurantId + " not found");
-        }
+                Optional.ofNullable(getRestaurantById(restaurantId));
+        restaurantRepository.delete(restaurant.get());
     }
 
     @Transactional(readOnly = true)
@@ -93,5 +79,13 @@ public class RestaurantService {
                     restaurant.setMenus(menus);
                 })
                 .collect(Collectors.toList());
+    }
+
+    private Restaurant getRestaurantById(Long id) {
+        return restaurantRepository
+                .findById(id).orElseThrow(() ->
+                        new NotFoundException("Restaurant with " +
+                                "id: " +
+                                id + " not found"));
     }
 }
