@@ -20,7 +20,8 @@ public class Restaurant {
     private Long id;
 
     @Column(name = "name", nullable = false, unique = true)
-    @Getter @Setter
+    @Getter
+    @Setter
     private String name;
 
     @OneToMany(mappedBy = "restaurant",
@@ -28,6 +29,7 @@ public class Restaurant {
             orphanRemoval = true)
     @JsonManagedReference
     @OrderBy("dateTime DESC")
-    @Getter @Setter
+    @Getter
+    @Setter
     private List<Menu> menus;
 }

@@ -1,11 +1,13 @@
 package com.github.zorgit.restaurantvotingsystem.service;
 
 import com.github.zorgit.restaurantvotingsystem.dto.RestaurantDto;
+import com.github.zorgit.restaurantvotingsystem.dto.RestaurantWithDaymenuDto;
 import com.github.zorgit.restaurantvotingsystem.error.NotFoundException;
 import com.github.zorgit.restaurantvotingsystem.model.Menu;
 import com.github.zorgit.restaurantvotingsystem.model.Restaurant;
 import com.github.zorgit.restaurantvotingsystem.repository.MenuRepository;
 import com.github.zorgit.restaurantvotingsystem.repository.RestaurantRepository;
+import com.github.zorgit.restaurantvotingsystem.util.MenusUtil;
 import com.github.zorgit.restaurantvotingsystem.util.RestaurantUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -64,20 +67,35 @@ public class RestaurantService {
     }
 
     @Transactional(readOnly = true)
-    public List<Restaurant> getRestaurantsWithMenus() {
+    public List<RestaurantWithDaymenuDto> getDayMenu() {
+        LocalDateTime now = LocalDateTime.now();
         LocalDateTime voteBoundaries = LocalDate.now().atTime(11, 0);
-        if (LocalDateTime.now().isAfter(voteBoundaries)) {
-            voteBoundaries = voteBoundaries.plusDays(1);
+        if (now.isBefore(voteBoundaries)) {
+            voteBoundaries = voteBoundaries.minusDays(1);
         }
-        final LocalDateTime menuDate = voteBoundaries;
+        final LocalDateTime startDateTime = voteBoundaries;
+        final LocalDateTime endDateTime = startDateTime.plusDays(1).minusSeconds(1);
+
+        List<Menu> allMenus = menuRepository.findByDateTimeBetween(startDateTime, endDateTime);
+
+        Map<Restaurant, List<Menu>> menusByRestaurant =
+                allMenus.stream()
+                        .collect(Collectors.groupingBy(Menu::getRestaurant));
+
         return restaurantRepository.findAll().stream()
-                .filter(restaurant -> !menuRepository.findByRestaurantIdAndAndDateTime(restaurant.getId(),
-                        menuDate).isEmpty())
-                .peek(restaurant -> {
-                    List<Menu> menus = menuRepository.findByRestaurantIdAndAndDateTime(restaurant.getId(),
-                            menuDate);
-                    restaurant.setMenus(menus);
+                .map(restaurant -> {
+                    RestaurantWithDaymenuDto restaurantDto =
+                            new RestaurantWithDaymenuDto(restaurant.getId(),
+                                    restaurant.getName(), null);
+
+                    List<Menu> menus = menusByRestaurant.get(restaurant);
+
+                    if (menus != null) {
+                        restaurantDto.setMenuDtos(MenusUtil.asMenuDtos(menus));
+                    }
+                    return restaurantDto;
                 })
+                .filter(restaurantDto -> restaurantDto.getMenuDtos() != null)
                 .collect(Collectors.toList());
     }
 

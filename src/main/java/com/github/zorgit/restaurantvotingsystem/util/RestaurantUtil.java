@@ -42,7 +42,7 @@ public class RestaurantUtil {
         return new RestaurantWithDaymenuDto(
                 restaurant.getId(),
                 restaurant.getName(),
-                MenusUtil.createNewFromToWithoutDate(restaurant.getMenus().get(0))
+                MenusUtil.asMenuDtos(restaurant.getMenus())
         );
     }
 }

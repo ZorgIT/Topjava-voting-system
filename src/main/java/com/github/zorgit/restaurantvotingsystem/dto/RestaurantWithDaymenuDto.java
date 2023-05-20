@@ -1,19 +1,23 @@
 package com.github.zorgit.restaurantvotingsystem.dto;
 
+import com.github.zorgit.restaurantvotingsystem.model.Menu;
+
+import java.util.List;
+
 public class RestaurantWithDaymenuDto extends RestaurantWithIdDto {
-    MenuWithoutDateDto menu;
+    List<MenuDto> menuDtos;
 
     public RestaurantWithDaymenuDto(Long id, String name,
-                                    MenuWithoutDateDto menu) {
+                                    List<MenuDto> menuDtos) {
         super(id, name);
-        this.menu = menu;
+        this.menuDtos = menuDtos;
     }
 
-    public MenuWithoutDateDto getMenuDto() {
-        return menu;
+    public List<MenuDto> getMenuDtos() {
+        return menuDtos;
     }
 
-    public void setMenuDto(MenuWithoutDateDto menuDto) {
-        this.menu = menuDto;
+    public void setMenuDtos(List<MenuDto> menuDtos) {
+        this.menuDtos = menuDtos;
     }
 }
